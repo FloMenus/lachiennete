@@ -1,0 +1,123 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LA_CHIENNETÉ — {{ article.title }}{% endblock %}
+
+{% block body %}
+    <section class="mx-auto max-w-6xl px-8 pb-24 pt-14">
+        <nav class="mb-10 flex items-center gap-2 text-[11px] uppercase tracking-widest text-ink-faint" aria-label="Fil d'Ariane">
+            <a href="{{ path('app_home') }}" class="text-ink-dim hover:text-acid">// Annonces</a>
+            <span aria-hidden="true">/</span>
+            {% if article.category %}
+                <span class="text-violet">{{ article.category.name }}</span>
+                <span aria-hidden="true">/</span>
+            {% endif %}
+            <span class="text-ink-dim">REF_{{ '%05d'|format(article.id) }}</span>
+        </nav>
+
+        <div class="grid gap-12 lg:grid-cols-[1.2fr_1fr]">
+            <div>
+                {% set mainImage = article.images.first %}
+                <div class="relative aspect-[4/3] overflow-hidden border border-line bg-void-raised">
+                    {% if mainImage %}
+                        <img src="{{ asset('uploads/articles/' ~ mainImage.filename) }}" alt="{{ mainImage.alt|default(article.title) }}" class="h-full w-full object-cover grayscale-[40%] contrast-115 transition duration-500 hover:grayscale-0">
+                    {% else %}
+                        <div class="flex h-full items-center justify-center text-[11px] tracking-widest text-ink-faint">AUCUN VISUEL — VOUS ACHETEZ À L'AVEUGLE</div>
+                    {% endif %}
+                    {% if article.category %}
+                        <span class="absolute left-[-0.4rem] top-3 -rotate-3 bg-violet px-2 py-0.5 text-[10px] uppercase tracking-wide text-void">{{ article.category.name }}</span>
+                    {% endif %}
+                </div>
+
+                {% if article.images|length > 1 %}
+                    <div class="mt-3 grid grid-cols-4 gap-3">
+                        {% for image in article.images|slice(1) %}
+                            <div class="aspect-square overflow-hidden border border-line bg-void-raised {{ cycle(['rotate-1', '-rotate-1', 'rotate-0'], loop.index0) }}">
+                                <img src="{{ asset('uploads/articles/' ~ image.filename) }}" alt="{{ image.alt|default(article.title) }}" loading="lazy" class="h-full w-full object-cover grayscale-[60%] transition duration-300 hover:grayscale-0">
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="flex flex-col gap-8">
+                <div>
+                    <h1 class="glitch-text -rotate-1 font-display text-[clamp(1.8rem,4vw,3rem)] leading-tight text-ink" data-text="{{ article.title }}" data-terminal-target="glitch">{{ article.title }}</h1>
+                    <p class="mt-3 text-[11px] uppercase tracking-widest text-ink-faint">Mise en ligne le {{ article.createdAt|date('d/m/Y') }} — aucune garantie, aucun retour</p>
+                </div>
+
+                <div class="border border-line bg-void-card p-5">
+                    {% if article.price %}
+                        <span class="font-display text-4xl text-acid">{{ article.price|number_format(2, ',', ' ') }} €</span>
+                    {% else %}
+                        <span class="inline-block bg-[repeating-linear-gradient(45deg,rgba(255,31,75,0.08)_0,rgba(255,31,75,0.08)_4px,transparent_4px,transparent_8px)] px-2 py-1 font-mono text-sm tracking-wide text-blood">PRIX SUR DEVIS</span>
+                    {% endif %}
+                    {% if article.alternativePayment %}
+                        <p class="mt-3 w-fit -rotate-2 border border-dashed border-amber px-2 py-1 text-[10px] uppercase tracking-wide text-amber">{{ article.alternativePayment }}</p>
+                    {% endif %}
+
+                    <div class="mt-5 flex flex-col gap-3 border-t border-line pt-5">
+                        <button type="button" class="group relative border border-acid bg-acid px-4 py-3 text-[12px] font-bold uppercase tracking-wider text-void transition hover:-translate-y-0.5 hover:shadow-[3px_3px_0_rgba(57,255,140,0.35)]">
+                            ACHETER MAINTENANT
+                            <span class="absolute -right-1.5 -top-1.5 rotate-6 bg-blood px-1 py-0.5 text-[8px] tracking-widest text-void">SANS REMBOURSEMENT</span>
+                        </button>
+                        <button type="button" class="border border-violet px-4 py-3 text-[12px] font-bold uppercase tracking-wider text-violet transition hover:bg-violet hover:text-void">
+                            ✉ CONTACTER LE VENDEUR
+                        </button>
+                        <p class="text-center text-[9px] uppercase tracking-widest text-ink-faint">Canal chiffré*. Réponse non garantie.</p>
+                    </div>
+
+                    {% if article.seller %}
+                        <div class="mt-4 flex items-center justify-between border-t border-line pt-4">
+                            <div class="flex flex-col gap-0.5">
+                                <span class="text-[9px] uppercase text-ink-faint">Vendeur</span>
+                                <span class="text-sm text-ink-dim">Agent_{{ article.seller.id }}{{ article.seller.lastname|slice(0, 1)|upper }}</span>
+                            </div>
+                            <span class="text-[10px] uppercase tracking-widest text-ink-faint">{{ article.reviews|length }} avis</span>
+                        </div>
+                    {% endif %}
+                </div>
+
+                {% if article.tags|length > 0 %}
+                    <div class="flex flex-wrap gap-2">
+                        {% for tag in article.tags %}
+                            <span class="border border-acid-dim px-2 py-1 text-[11px] text-acid-dim">#{{ tag.name|lower }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <div>
+                    <h2 class="mb-3 border-b border-line pb-2 text-sm font-normal tracking-wider text-ink-dim">// DESCRIPTIF (FOURNI TEL QUEL)</h2>
+                    <p class="whitespace-pre-line text-sm leading-relaxed text-ink-dim">{{ article.description }}</p>
+                </div>
+            </div>
+        </div>
+
+        <section class="mt-20" aria-label="Avis">
+            <div class="mb-8 flex items-baseline justify-between border-b border-line pb-3">
+                <h2 class="text-sm font-normal tracking-wider text-ink-dim">// AVIS DES ACHETEURS ({{ article.reviews|length }})</h2>
+                {% if averageRating %}
+                    <span class="font-display text-lg text-acid">{{ averageRating|number_format(1, ',') }}/5</span>
+                {% endif %}
+            </div>
+
+            {% if article.reviews|length > 0 %}
+                <div class="grid gap-5 md:grid-cols-2">
+                    {% for review in article.reviews %}
+                        <article class="border border-line bg-void-card p-5 {{ cycle(['rotate-0', '-rotate-1', 'rotate-1'], loop.index0) }}">
+                            <div class="mb-2 flex items-center justify-between">
+                                <span class="text-[11px] text-ink-dim">Agent_{{ review.author.id }}{{ review.author.lastname|slice(0, 1)|upper }}</span>
+                                <span class="text-[13px] tracking-[0.2em] text-amber" aria-label="{{ review.rating }} sur 5">{{ '★★★★★'|slice(0, review.rating) }}<span class="text-ink-faint">{{ '★★★★★'|slice(0, 5 - review.rating) }}</span></span>
+                            </div>
+                            {% if review.comment %}
+                                <p class="text-[13px] text-ink-dim">{{ review.comment }}</p>
+                            {% endif %}
+                            <p class="mt-3 text-[10px] uppercase tracking-widest text-ink-faint">{{ review.createdAt|date('d/m/Y') }}</p>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="italic text-ink-faint">Aucun avis. Soit personne n'a survécu à l'achat, soit personne n'a rien à dire.</p>
+            {% endif %}
+        </section>
+    </section>
+{% endblock %}

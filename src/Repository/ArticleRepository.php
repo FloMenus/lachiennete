@@ -31,4 +31,18 @@ class ArticleRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findOneForShow(int $id): ?Article
+    {
+        return $this->createQueryBuilder('a')
+            ->addSelect('category', 'seller', 'images', 'tags')
+            ->leftJoin('a.category', 'category')
+            ->leftJoin('a.seller', 'seller')
+            ->leftJoin('a.images', 'images')
+            ->leftJoin('a.tags', 'tags')
+            ->andWhere('a.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }
