@@ -1,0 +1,47 @@
+{# Expects: article (App\Entity\Article), tilt (string, Tailwind rotate class), featured (bool) #}
+<article class="group relative flex flex-col border border-line bg-void-card transition-transform duration-200 ease-out {{ tilt }} hover:z-10 hover:rotate-0 hover:-translate-y-1 hover:shadow-[3px_0_0_rgba(255,31,75,0.55),-3px_0_0_rgba(155,92,255,0.55)] {{ featured ? 'md:col-span-2' : '' }}">
+    <div class="relative aspect-[4/3] overflow-hidden border-b border-line bg-void-raised">
+        {% set image = article.images.first %}
+        {% if image %}
+            <img src="{{ asset('uploads/articles/' ~ image.filename) }}" alt="{{ image.alt|default(article.title) }}" loading="lazy" class="h-full w-full object-cover grayscale-[75%] contrast-125 brightness-90 transition duration-500 group-hover:scale-105 group-hover:grayscale-0 group-hover:contrast-105 group-hover:saturate-150">
+        {% else %}
+            <div class="flex h-full items-center justify-center text-[11px] tracking-widest text-ink-faint">AUCUN VISUEL</div>
+        {% endif %}
+        {% if article.category %}
+            <span class="absolute left-[-0.4rem] top-2.5 -rotate-3 bg-violet px-2 py-0.5 text-[10px] uppercase tracking-wide text-void">{{ article.category.name }}</span>
+        {% endif %}
+    </div>
+
+    <div class="flex-1 px-4 pb-2 pt-4">
+        <h3 class="mb-2 font-display text-lg text-ink">{{ article.title }}</h3>
+        <p class="mb-3 text-[13px] text-ink-dim">{{ article.description|slice(0, 110) }}{{ article.description|length > 110 ? '…' : '' }}</p>
+
+        {% if article.tags|length > 0 %}
+            <div class="flex flex-wrap gap-1.5">
+                {% for tag in article.tags %}
+                    <span class="border border-acid-dim px-1.5 py-0.5 text-[10px] text-acid-dim">#{{ tag.name|lower }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="flex items-end justify-between gap-2 px-4 pb-4 pt-3">
+        <div class="flex flex-col gap-1">
+            {% if article.price %}
+                <span class="font-display text-lg text-acid">{{ article.price|number_format(2, ',', ' ') }} €</span>
+            {% else %}
+                <span class="w-fit bg-[repeating-linear-gradient(45deg,rgba(255,31,75,0.08)_0,rgba(255,31,75,0.08)_4px,transparent_4px,transparent_8px)] px-1 py-0.5 font-mono text-[11px] tracking-wide text-blood">PRIX SUR DEVIS</span>
+            {% endif %}
+            {% if article.alternativePayment %}
+                <span class="w-fit -rotate-3 border border-dashed border-amber px-1.5 py-0.5 text-[9px] uppercase tracking-wide text-amber">{{ article.alternativePayment }}</span>
+            {% endif %}
+        </div>
+
+        {% if article.seller %}
+            <div class="flex flex-col items-end gap-0.5 text-right">
+                <span class="text-[9px] uppercase text-ink-faint">Vendeur</span>
+                <span class="text-[11px] text-ink-dim">Agent_{{ article.seller.id }}{{ article.seller.lastname|slice(0, 1)|upper }}</span>
+            </div>
+        {% endif %}
+    </div>
+</article>

@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LA_CHIENNETÉ — {{ articles|length }} annonces actives{% endblock %}
+
+{% block body %}
+    <section class="mx-auto max-w-5xl px-8 pb-14 pt-20">
+        <p class="mb-4 text-[11px] uppercase tracking-[0.25em] text-violet">[ ACCÈS NON RÉFÉRENCÉ // NIVEAU D'HABILITATION : INCONNU ]</p>
+        <h1 class="glitch-text -rotate-1 font-display text-[clamp(2.8rem,8vw,6.5rem)] leading-[0.95] text-ink [text-shadow:0_0_30px_rgba(57,255,140,0.25)]" data-text="TOUT S'ACHÈTE." data-terminal-target="glitch">TOUT S'ACHÈTE.</h1>
+        <p class="ml-[3vw] mt-7 max-w-[46ch] text-sm text-ink-dim">
+            Animaux exotiques, diplômes qui n'existent pas, ministères, démons en cage.
+            Si ça se vend quelque part, ça se vend ici — et personne ne vous demandera pourquoi.
+        </p>
+
+        <div class="mt-12 flex flex-wrap gap-10 border-t border-line pt-6">
+            <div class="flex flex-col gap-0.5">
+                <span class="font-display text-3xl text-acid">{{ articles|length }}</span>
+                <span class="text-[10px] uppercase tracking-widest text-ink-faint">annonces actives</span>
+            </div>
+            <div class="flex translate-y-1.5 flex-col gap-0.5">
+                <span class="font-display text-3xl text-acid">{{ categories|length }}</span>
+                <span class="text-[10px] uppercase tracking-widest text-ink-faint">catégories</span>
+            </div>
+            <div class="flex flex-col gap-0.5">
+                <span class="font-display text-3xl text-acid">100%</span>
+                <span class="text-[10px] uppercase tracking-widest text-ink-faint">discrétion*</span>
+            </div>
+        </div>
+    </section>
+
+    <nav class="mx-auto flex max-w-5xl gap-3 overflow-x-auto px-8 pb-10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" id="categories" aria-label="Filtrer par catégorie">
+        <a href="#listing" class="shrink-0 whitespace-nowrap border border-acid bg-acid px-3.5 py-2 text-[11px] font-bold uppercase tracking-wider text-void">TOUT</a>
+        {% for category in categories %}
+            {% set rotate = cycle(['rotate-1', '-rotate-1', 'rotate-0'], loop.index0) %}
+            <a href="#listing" class="{{ rotate }} shrink-0 whitespace-nowrap border border-ink-faint px-3.5 py-2 text-[11px] uppercase tracking-wider text-ink-dim hover:border-blood hover:text-blood" title="{{ category.description }}">{{ category.name }}</a>
+        {% endfor %}
+    </nav>
+
+    <section class="mx-auto max-w-6xl px-8 pb-24" id="listing">
+        <div class="mb-8 flex items-baseline justify-between border-b border-line pb-3">
+            <h2 class="text-sm font-normal tracking-wider text-ink-dim">// DERNIÈRES ANNONCES</h2>
+            <span class="text-[11px] text-ink-faint">{{ articles|length }} résultat{{ articles|length > 1 ? 's' : '' }}</span>
+        </div>
+
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(255px,1fr))] gap-7 [grid-auto-flow:dense]">
+            {% for article in articles %}
+                {% set tilt = cycle(['-rotate-2', '-rotate-1', 'rotate-0', 'rotate-1', 'rotate-2'], loop.index0) %}
+                {% set featured = loop.index0 % 7 == 0 %}
+                {% include 'partials/_article_card.html.twig' with { article: article, tilt: tilt, featured: featured } only %}
+            {% else %}
+                <p class="italic text-ink-faint">Aucune annonce pour l'instant. Revenez plus tard. Ou jamais.</p>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

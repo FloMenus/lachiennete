@@ -1,17 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noindex, nofollow">
+        <meta name="color-scheme" content="dark">
+        <title>{% block title %}LA_CHIENNETÉ — tout s'achète{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🕳️</text></svg>">
         {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
         {% endblock %}
 
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
     </head>
-    <body>
-        {% block content %}{% endblock %}
+    <body class="relative min-h-screen overflow-x-hidden bg-void font-mono text-[15px] leading-relaxed text-ink cursor-crosshair" data-controller="terminal">
+        <div class="noise-layer" aria-hidden="true"></div>
+        <div class="scanline-layer" aria-hidden="true"></div>
+
+        <div class="overflow-hidden whitespace-nowrap border-b-2 border-void bg-blood text-[11px] font-bold tracking-wider text-void" role="presentation" aria-hidden="true">
+            <div class="inline-flex animate-[ticker-scroll_38s_linear_infinite]">
+                {% for i in 1..2 %}
+                <span class="py-1 pr-8">⚠ CE SITE EST UNE DÉMONSTRATION — AUCUN BIEN N'EST RÉEL — ⚠ CONNEXION NON CHIFFRÉE DÉTECTÉE — ⚠ NE FAITES CONFIANCE À PERSONNE, SURTOUT PAS À CE BANDEAU — ⚠ 17 AGENTS ACTUELLEMENT CONNECTÉS — ⚠ LES AVIS 5 ÉTOILES SONT SUSPECTS — ⚠</span>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% include 'partials/_navbar.html.twig' %}
+
+        <main>
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="mx-auto mt-6 max-w-6xl border-l-4 {{ label == 'error' ? 'border-blood' : 'border-acid' }} bg-void-raised px-5 py-3 text-sm">{{ message }}</div>
+                {% endfor %}
+            {% endfor %}
+
+            {% block body %}{% endblock %}
+        </main>
+
+        {% include 'partials/_footer.html.twig' %}
     </body>
 </html>

@@ -1,3 +1,85 @@
-body {
-    background-color: skyblue;
+@import "tailwindcss";
+@source "../../templates";
+
+/*
+ * LA_CHIENNETÉ — darknet-market art direction.
+ * Custom palette lives in @theme below and is consumed directly as Tailwind
+ * utilities in templates (bg-void, text-acid, border-line, font-display...).
+ * The @layer components block only covers what utilities genuinely can't
+ * express: pseudo-element glitch text, layered noise/scanline overlays.
+ */
+@theme {
+    --color-void: #060608;
+    --color-void-raised: #0d0d11;
+    --color-void-card: #101014;
+    --color-line: #232329;
+
+    --color-acid: #39ff8c;
+    --color-acid-dim: #1f8f52;
+    --color-blood: #ff1f4b;
+    --color-violet: #9b5cff;
+    --color-amber: #ffb020;
+
+    --color-ink: #d8d8dd;
+    --color-ink-dim: #726f7d;
+    --color-ink-faint: #45424e;
+
+    --font-mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'Courier New', monospace;
+    --font-display: Georgia, 'Times New Roman', serif;
+}
+
+@layer components {
+    .noise-layer {
+        @apply pointer-events-none fixed inset-0 z-[500] opacity-5;
+        mix-blend-mode: overlay;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    .scanline-layer {
+        @apply pointer-events-none fixed inset-0 z-[501];
+        background: repeating-linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.035) 0px,
+            rgba(255, 255, 255, 0.035) 1px,
+            transparent 2px,
+            transparent 3px
+        );
+        animation: scan-drift 9s linear infinite;
+    }
+
+    .glitch-text {
+        @apply relative inline-block;
+    }
+
+    .glitch-text.is-glitching::before,
+    .glitch-text.is-glitching::after {
+        content: attr(data-text);
+        @apply absolute inset-0 bg-transparent;
+    }
+
+    .glitch-text.is-glitching::before {
+        @apply text-blood;
+        clip-path: inset(0 0 55% 0);
+        transform: translate(-3px, -1px);
+    }
+
+    .glitch-text.is-glitching::after {
+        @apply text-violet;
+        clip-path: inset(45% 0 0 0);
+        transform: translate(3px, 1px);
+    }
+}
+
+@keyframes scan-drift {
+    from { background-position: 0 0; }
+    to { background-position: 0 300px; }
+}
+
+@keyframes ticker-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
 }
