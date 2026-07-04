@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LA_CHIENNETÉ — Mon profil{% endblock %}
+
+{% block body %}
+    <section class="mx-auto max-w-4xl px-8 pb-24 pt-16">
+        <p class="mb-4 text-[11px] uppercase tracking-[0.25em] text-violet">[ DOSSIER PERSONNEL // CLASSIFIÉ NIVEAU {{ app.user.roles|length }} ]</p>
+        <h1 class="glitch-text -rotate-1 font-display text-[clamp(2rem,5vw,3.5rem)] leading-tight text-ink" data-text="{{ app.user.firstname }} {{ app.user.lastname|upper }}" data-terminal-target="glitch">{{ app.user.firstname }} {{ app.user.lastname|upper }}</h1>
+
+        <div class="mt-8 flex flex-wrap gap-8 border-t border-line pt-5 text-[11px] uppercase tracking-widest text-ink-faint">
+            <span>Enrôlé le <span class="text-ink-dim">{{ app.user.createdAt|date('d/m/Y') }}</span></span>
+            <span>Annonces <span class="text-acid">{{ app.user.articles|length }}</span></span>
+            <span>Achats <span class="text-acid">{{ app.user.purchases|length }}</span></span>
+            <span>Favoris <span class="text-acid">{{ app.user.favorites|length }}</span></span>
+            <span>Statut
+                {% for role in app.user.roles|filter(r => r != 'ROLE_USER') %}
+                    <span class="ml-1 border border-dashed border-amber px-1.5 py-0.5 text-amber">{{ role|replace({'ROLE_': ''}) }}</span>
+                {% endfor %}
+            </span>
+        </div>
+
+        <div class="mt-12 grid gap-10 md:grid-cols-2">
+            <div>
+                <h2 class="mb-4 border-b border-line pb-2 text-sm font-normal tracking-wider text-ink-dim">// IDENTITÉ DÉCLARÉE</h2>
+                {{ form_start(profileForm, { attr: { class: 'flex flex-col gap-5 border border-line bg-void-card p-6 -rotate-[0.3deg]' } }) }}
+                    {{ form_errors(profileForm) }}
+                    {{ form_row(profileForm.firstname) }}
+                    {{ form_row(profileForm.lastname) }}
+                    {{ form_row(profileForm.email) }}
+                    <button type="submit" class="mt-2 border border-acid px-4 py-2.5 text-[11px] font-bold uppercase tracking-wider text-acid transition hover:bg-acid hover:text-void">METTRE À JOUR</button>
+                {{ form_end(profileForm) }}
+            </div>
+
+            <div>
+                <h2 class="mb-4 border-b border-line pb-2 text-sm font-normal tracking-wider text-ink-dim">// CODE D'ACCÈS</h2>
+                {{ form_start(passwordForm, { attr: { class: 'flex flex-col gap-5 border border-line bg-void-card p-6 rotate-[0.3deg]' } }) }}
+                    {{ form_errors(passwordForm) }}
+                    {{ form_row(passwordForm.currentPassword) }}
+                    {{ form_row(passwordForm.newPassword.first) }}
+                    {{ form_row(passwordForm.newPassword.second) }}
+                    <button type="submit" class="mt-2 border border-violet px-4 py-2.5 text-[11px] font-bold uppercase tracking-wider text-violet transition hover:bg-violet hover:text-void">CHANGER LE CODE</button>
+                {{ form_end(passwordForm) }}
+            </div>
+        </div>
+
+        <div class="mt-14 flex items-center justify-between border border-dashed border-blood bg-[rgba(255,31,75,0.04)] px-6 py-4">
+            <div>
+                <p class="text-[11px] font-bold uppercase tracking-widest text-blood">Zone de non-retour</p>
+                <p class="mt-1 text-[12px] text-ink-dim">Couper la connexion. Le dossier reste ouvert, évidemment.</p>
+            </div>
+            <a href="{{ path('app_logout') }}" class="shrink-0 border border-blood px-4 py-2.5 text-[11px] font-bold uppercase tracking-wider text-blood transition hover:bg-blood hover:text-void">SE DÉCONNECTER</a>
+        </div>
+    </section>
+{% endblock %}

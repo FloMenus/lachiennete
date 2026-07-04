@@ -1,0 +1,36 @@
+{% use 'form_div_layout.html.twig' %}
+
+{%- block form_row -%}
+    {%- set row_attr = row_attr|merge({ class: (row_attr.class|default('') ~ ' flex flex-col gap-1.5')|trim }) -%}
+    <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
+        {{- form_label(form) -}}
+        {{- form_widget(form) -}}
+        {{- form_errors(form) -}}
+        {{- form_help(form) -}}
+    </div>
+{%- endblock form_row -%}
+
+{%- block form_label -%}
+    {%- set label_attr = label_attr|merge({ class: (label_attr.class|default('') ~ ' text-[10px] uppercase tracking-[0.2em] text-ink-dim')|trim }) -%}
+    {{- parent() -}}
+{%- endblock form_label -%}
+
+{%- block form_widget_simple -%}
+    {%- set attr = attr|merge({ class: (attr.class|default('') ~ ' w-full border border-line bg-void-raised px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-faint focus:border-acid focus:outline-none focus:shadow-[0_0_0_1px_rgba(57,255,140,0.4)] transition')|trim }) -%}
+    {{- parent() -}}
+{%- endblock form_widget_simple -%}
+
+{%- block form_errors -%}
+    {%- if errors|length > 0 -%}
+        <ul class="flex flex-col gap-0.5">
+            {%- for error in errors -%}
+                <li class="border-l-2 border-blood pl-2 text-[11px] text-blood">{{ error.message }}</li>
+            {%- endfor -%}
+        </ul>
+    {%- endif -%}
+{%- endblock form_errors -%}
+
+{%- block form_help -%}
+    {%- set help_attr = help_attr|merge({ class: (help_attr.class|default('') ~ ' text-[10px] text-ink-faint')|trim }) -%}
+    {{- parent() -}}
+{%- endblock form_help -%}

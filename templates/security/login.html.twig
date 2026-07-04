@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LA_CHIENNETÉ — identification{% endblock %}
+
+{% block body %}
+    <section class="mx-auto max-w-md px-8 pb-24 pt-20">
+        <p class="mb-4 text-[11px] uppercase tracking-[0.25em] text-violet">[ POINT DE CONTRÔLE // IDENTIFIEZ-VOUS ]</p>
+        <h1 class="glitch-text -rotate-1 font-display text-[clamp(2rem,6vw,3.5rem)] leading-tight text-ink" data-text="QUI VA LÀ ?" data-terminal-target="glitch">QUI VA LÀ ?</h1>
+        <p class="mt-5 max-w-[40ch] text-sm text-ink-dim">On ne vous demandera pas votre vrai nom. Juste de quoi vous reconnaître la prochaine fois.</p>
+
+        <form method="post" class="mt-10 flex flex-col gap-5 border border-line bg-void-card p-6 -rotate-[0.4deg]">
+            {% if error %}
+                <p class="border-l-2 border-blood bg-[rgba(255,31,75,0.06)] px-3 py-2 text-[12px] text-blood">{{ error.messageKey|trans(error.messageData, 'security') }}</p>
+            {% endif %}
+
+            <div class="flex flex-col gap-1.5">
+                <label for="username" class="text-[10px] uppercase tracking-[0.2em] text-ink-dim">Email</label>
+                <input type="email" value="{{ last_username }}" name="_username" id="username" autocomplete="email" required autofocus placeholder="agent@exemple.onion" class="w-full border border-line bg-void-raised px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-faint focus:border-acid focus:outline-none focus:shadow-[0_0_0_1px_rgba(57,255,140,0.4)] transition">
+            </div>
+
+            <div class="flex flex-col gap-1.5">
+                <label for="password" class="text-[10px] uppercase tracking-[0.2em] text-ink-dim">Mot de passe</label>
+                <input type="password" name="_password" id="password" autocomplete="current-password" required class="w-full border border-line bg-void-raised px-3.5 py-2.5 text-sm text-ink focus:border-acid focus:outline-none focus:shadow-[0_0_0_1px_rgba(57,255,140,0.4)] transition">
+            </div>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <button type="submit" class="mt-2 border border-acid bg-acid px-4 py-3 text-[12px] font-bold uppercase tracking-wider text-void transition hover:-translate-y-0.5 hover:shadow-[3px_3px_0_rgba(57,255,140,0.35)]">S'IDENTIFIER</button>
+        </form>
+
+        <p class="mt-6 text-center text-[12px] text-ink-faint">
+            Pas encore de matricule ?
+            <a href="{{ path('app_register') }}" class="text-violet underline decoration-dashed underline-offset-4 hover:text-acid">Créer un compte</a>
+        </p>
+    </section>
+{% endblock %}

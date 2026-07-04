@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LA_CHIENNETÉ — enrôlement{% endblock %}
+
+{% block body %}
+    <section class="mx-auto max-w-md px-8 pb-24 pt-20">
+        <p class="mb-4 text-[11px] uppercase tracking-[0.25em] text-violet">[ ENRÔLEMENT // AUCUNE VÉRIFICATION D'IDENTITÉ ]</p>
+        <h1 class="glitch-text -rotate-1 font-display text-[clamp(2rem,6vw,3.5rem)] leading-tight text-ink" data-text="REJOIGNEZ LA FOSSE." data-terminal-target="glitch">REJOIGNEZ LA FOSSE.</h1>
+
+        {{ form_start(registrationForm, { attr: { class: 'mt-10 flex flex-col gap-5 border border-line bg-void-card p-6 rotate-[0.4deg]' } }) }}
+            {{ form_errors(registrationForm) }}
+            <div class="grid gap-5 sm:grid-cols-2">
+                {{ form_row(registrationForm.firstname) }}
+                {{ form_row(registrationForm.lastname) }}
+            </div>
+            {{ form_row(registrationForm.email) }}
+            {{ form_row(registrationForm.plainPassword.first) }}
+            {{ form_row(registrationForm.plainPassword.second) }}
+
+            <button type="submit" class="mt-2 border border-acid bg-acid px-4 py-3 text-[12px] font-bold uppercase tracking-wider text-void transition hover:-translate-y-0.5 hover:shadow-[3px_3px_0_rgba(57,255,140,0.35)]">CRÉER MON COMPTE</button>
+            <p class="text-center text-[9px] uppercase tracking-widest text-ink-faint">En vous inscrivant, vous renoncez à tout. Lisez les CGU que nous n'avons pas écrites.</p>
+        {{ form_end(registrationForm) }}
+
+        <p class="mt-6 text-center text-[12px] text-ink-faint">
+            Déjà des nôtres ?
+            <a href="{{ path('app_login') }}" class="text-violet underline decoration-dashed underline-offset-4 hover:text-acid">Se connecter</a>
+        </p>
+    </section>
+{% endblock %}

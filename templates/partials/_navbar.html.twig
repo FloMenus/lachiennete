@@ -8,11 +8,16 @@
         <a href="{{ path('app_home') }}" class="hover:text-blood">Accueil</a>
         <a href="{{ path('app_home') }}#listing" class="translate-y-0.5 hover:text-blood">Annonces</a>
         <a href="{{ path('app_home') }}#categories" class="hover:text-blood">Catégories</a>
-        <a href="#" class="translate-y-0.5 text-ink-faint hover:text-blood">Connexion</a>
+        {% if app.user %}
+            <a href="{{ path('app_profile') }}" class="translate-y-0.5 text-acid hover:text-blood">Mon dossier</a>
+            <a href="{{ path('app_logout') }}" class="text-ink-faint hover:text-blood">Déconnexion</a>
+        {% else %}
+            <a href="{{ path('app_login') }}" class="translate-y-0.5 text-ink-faint hover:text-blood">Connexion</a>
+        {% endif %}
     </nav>
 
     <div class="flex items-center gap-0.5 text-xs text-ink-dim">
-        <span class="text-violet">guest@onion</span><span>:</span><span>~$</span>
+        <span class="text-violet">{{ app.user ? ('agent_' ~ app.user.id ~ app.user.lastname|slice(0, 1)|lower) : 'guest' }}@onion</span><span>:</span><span>~$</span>
         <span class="ml-2 text-acid" data-terminal-target="clock">00:00:00</span>
         <span class="ml-0.5 animate-[blink_1s_steps(1)_infinite] text-acid" aria-hidden="true">▌</span>
     </div>
