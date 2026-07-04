@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class ArticleController extends AbstractController
 {
-    #[Route('/annonce/{id}', name: 'app_article_show', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[Route('/article/{id}', name: 'app_article_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function show(int $id, ArticleRepository $articleRepository): Response
     {
         $article = $articleRepository->findOneForShow($id);
