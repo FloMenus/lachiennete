@@ -18,7 +18,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[IsGranted('ROLE_PRESTATAIRE')]
-#[Route('/mes-annonces')]
+#[Route('/my-articles')]
 final class SellerController extends AbstractController
 {
     #[Route('', name: 'app_seller_articles', methods: ['GET'])]
@@ -32,7 +32,7 @@ final class SellerController extends AbstractController
         ]);
     }
 
-    #[Route('/nouvelle', name: 'app_seller_article_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'app_seller_article_new', methods: ['GET', 'POST'])]
     public function new(
         Request $request,
         EntityManagerInterface $em,
@@ -62,7 +62,7 @@ final class SellerController extends AbstractController
         return $this->render('seller/new.html.twig', ['form' => $form]);
     }
 
-    #[Route('/{id}/modifier', name: 'app_seller_article_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'app_seller_article_edit', methods: ['GET', 'POST'])]
     public function edit(
         Article $article,
         Request $request,
@@ -91,7 +91,7 @@ final class SellerController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/supprimer', name: 'app_seller_article_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_seller_article_delete', methods: ['POST'])]
     public function delete(
         Article $article,
         Request $request,
@@ -116,7 +116,7 @@ final class SellerController extends AbstractController
         return $this->redirectToRoute('app_seller_articles');
     }
 
-    #[Route('/{articleId}/images/{imageId}/supprimer', name: 'app_seller_image_delete', methods: ['POST'])]
+    #[Route('/{articleId}/images/{imageId}/delete', name: 'app_seller_image_delete', methods: ['POST'])]
     public function deleteImage(
         int $articleId,
         int $imageId,

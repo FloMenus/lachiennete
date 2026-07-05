@@ -30,7 +30,7 @@ final class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/annonces', name: 'app_admin_articles', methods: ['GET'])]
+    #[Route('/articles', name: 'app_admin_articles', methods: ['GET'])]
     public function articles(ArticleRepository $articleRepository): Response
     {
         return $this->render('admin/articles.html.twig', [
@@ -38,7 +38,7 @@ final class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/annonces/{id}/supprimer', name: 'app_admin_article_delete', methods: ['POST'])]
+    #[Route('/articles/{id}/delete', name: 'app_admin_article_delete', methods: ['POST'])]
     public function deleteArticle(Article $article, Request $request, EntityManagerInterface $em): Response
     {
         if (!$this->isCsrfTokenValid('delete_article_'.$article->getId(), $request->getPayload()->getString('_token'))) {
@@ -53,7 +53,7 @@ final class AdminController extends AbstractController
         return $this->redirectToRoute('app_admin_articles');
     }
 
-    #[Route('/utilisateurs', name: 'app_admin_users', methods: ['GET'])]
+    #[Route('/users', name: 'app_admin_users', methods: ['GET'])]
     public function users(UserRepository $userRepository): Response
     {
         return $this->render('admin/users.html.twig', [
@@ -61,7 +61,7 @@ final class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/utilisateurs/{id}/bannir', name: 'app_admin_user_ban', methods: ['POST'])]
+    #[Route('/users/{id}/ban', name: 'app_admin_user_ban', methods: ['POST'])]
     public function banUser(User $user, Request $request, EntityManagerInterface $em): Response
     {
         if (!$this->isCsrfTokenValid('ban_user_'.$user->getId(), $request->getPayload()->getString('_token'))) {
