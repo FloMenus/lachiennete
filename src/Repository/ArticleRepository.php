@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Article;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -27,6 +28,23 @@ class ArticleRepository extends ServiceEntityRepository
             ->leftJoin('a.seller', 'seller')
             ->leftJoin('a.images', 'images')
             ->leftJoin('a.tags', 'tags')
+            ->orderBy('a.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return Article[]
+     */
+    public function findBySeller(User $seller): array
+    {
+        return $this->createQueryBuilder('a')
+            ->addSelect('category', 'images', 'tags')
+            ->leftJoin('a.category', 'category')
+            ->leftJoin('a.images', 'images')
+            ->leftJoin('a.tags', 'tags')
+            ->andWhere('a.seller = :seller')
+            ->setParameter('seller', $seller)
             ->orderBy('a.createdAt', 'DESC')
             ->getQuery()
             ->getResult();

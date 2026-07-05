@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LA_CHIENNETÉ — Modifier « {{ article.title }} »{% endblock %}
+
+{% block body %}
+    <section class="mx-auto max-w-3xl px-8 pb-24 pt-14">
+        <nav class="mb-8 flex items-center gap-2 text-[11px] uppercase tracking-widest text-ink-faint">
+            <a href="{{ path('app_seller_articles') }}" class="hover:text-acid">// Mes annonces</a>
+            <span>/</span>
+            <span class="text-ink-dim">Modifier</span>
+        </nav>
+
+        <h1 class="font-display text-[clamp(1.8rem,4vw,3rem)] leading-tight text-ink">MODIFIER L'ANNONCE</h1>
+        <p class="mt-1 text-[11px] text-ink-faint">REF_{{ '%05d'|format(article.id) }}</p>
+
+        {% if article.images|length > 0 %}
+            <div class="mt-8">
+                <p class="mb-3 text-[10px] uppercase tracking-[0.2em] text-ink-dim">Images actuelles</p>
+                <div class="flex flex-wrap gap-3">
+                    {% for image in article.images %}
+                        <div class="group relative">
+                            <img src="{{ asset('uploads/articles/' ~ image.filename) }}"
+                                alt="{{ image.alt|default(article.title) }}"
+                                class="h-24 w-24 border border-line object-cover grayscale-[50%] transition group-hover:grayscale-0">
+                            <form method="post"
+                                action="{{ path('app_seller_image_delete', { articleId: article.id, imageId: image.id }) }}"
+                                onsubmit="return confirm('Supprimer cette image ?')">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete_image_' ~ image.id) }}">
+                                <button type="submit"
+                                    class="absolute right-0 top-0 bg-blood px-1.5 py-0.5 text-[9px] font-bold text-void opacity-0 transition group-hover:opacity-100">
+                                    ✕
+                                </button>
+                            </form>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {{ form_start(form, {
+            attr: { class: 'mt-8 flex flex-col gap-6 border border-line bg-void-card p-8', enctype: 'multipart/form-data' }
+        }) }}
+            {% include 'seller/_form.html.twig' %}
+            <div class="flex items-center gap-4 border-t border-line pt-6">
+                <button type="submit"
+                    class="border border-acid px-6 py-2.5 text-[11px] font-bold uppercase tracking-wider text-acid transition hover:bg-acid hover:text-void">
+                    ENREGISTRER
+                </button>
+                <a href="{{ path('app_seller_articles') }}" class="text-[11px] text-ink-faint hover:text-ink">Retour</a>
+            </div>
+        {{ form_end(form) }}
+
+        <form method="post" action="{{ path('app_seller_article_delete', { id: article.id }) }}"
+            onsubmit="return confirm('Supprimer définitivement cette annonce ?')"
+            class="mt-4 text-right">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete_article_' ~ article.id) }}">
+            <button type="submit"
+                class="border border-blood/40 px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-blood/60 transition hover:border-blood hover:text-blood">
+                Supprimer l'annonce
+            </button>
+        </form>
+    </section>
+{% endblock %}

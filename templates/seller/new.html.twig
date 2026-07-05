@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LA_CHIENNETÉ — Nouvelle annonce{% endblock %}
+
+{% block body %}
+    <section class="mx-auto max-w-3xl px-8 pb-24 pt-14">
+        <nav class="mb-8 flex items-center gap-2 text-[11px] uppercase tracking-widest text-ink-faint">
+            <a href="{{ path('app_seller_articles') }}" class="hover:text-acid">// Mes annonces</a>
+            <span>/</span>
+            <span class="text-ink-dim">Nouvelle</span>
+        </nav>
+
+        <h1 class="font-display text-[clamp(1.8rem,4vw,3rem)] leading-tight text-ink">NOUVELLE ANNONCE</h1>
+
+        {{ form_start(form, {
+            attr: { class: 'mt-10 flex flex-col gap-6 border border-line bg-void-card p-8', enctype: 'multipart/form-data' }
+        }) }}
+            {% include 'seller/_form.html.twig' %}
+            <div class="flex items-center gap-4 border-t border-line pt-6">
+                <button type="submit"
+                    class="border border-acid px-6 py-2.5 text-[11px] font-bold uppercase tracking-wider text-acid transition hover:bg-acid hover:text-void">
+                    PUBLIER L'ANNONCE
+                </button>
+                <a href="{{ path('app_seller_articles') }}" class="text-[11px] text-ink-faint hover:text-ink">Annuler</a>
+            </div>
+        {{ form_end(form) }}
+    </section>
+{% endblock %}
