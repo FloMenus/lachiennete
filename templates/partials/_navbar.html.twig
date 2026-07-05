@@ -6,8 +6,6 @@
 
     <nav class="flex gap-7 text-xs uppercase tracking-widest" aria-label="Navigation principale">
         <a href="{{ path('app_home') }}" class="hover:text-blood">Accueil</a>
-        <a href="{{ path('app_home') }}#listing" class="translate-y-0.5 hover:text-blood">Annonces</a>
-        <a href="{{ path('app_home') }}#categories" class="hover:text-blood">Catégories</a>
         {% if app.user %}
             {% if is_granted('ROLE_ADMIN') %}
                 <a href="{{ path('app_admin') }}" class="text-blood hover:text-ink">Admin</a>

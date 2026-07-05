@@ -30,6 +30,9 @@ class Purchase
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $paymentNote = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $deliveryAddress = null;
+
     #[ORM\Column]
     private ?\DateTimeImmutable $purchasedAt = null;
 
@@ -99,6 +102,18 @@ class Purchase
     public function setPaymentNote(?string $paymentNote): static
     {
         $this->paymentNote = $paymentNote;
+
+        return $this;
+    }
+
+    public function getDeliveryAddress(): ?string
+    {
+        return $this->deliveryAddress;
+    }
+
+    public function setDeliveryAddress(?string $deliveryAddress): static
+    {
+        $this->deliveryAddress = $deliveryAddress;
 
         return $this;
     }

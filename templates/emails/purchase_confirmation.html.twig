@@ -1,0 +1,34 @@
+<div style="background: #0a0a0f; color: #e8e8f0; font-family: 'Courier New', monospace; padding: 32px; max-width: 560px; margin: 0 auto;">
+    <h1 style="color: #39ff8c; font-size: 20px; letter-spacing: 2px;">LA_CHIENNETÉ</h1>
+    <p style="color: #8a8a9a; font-size: 11px; text-transform: uppercase; letter-spacing: 3px;">Confirmation de commande</p>
+
+    <p style="font-size: 14px; line-height: 1.6;">
+        Agent {{ purchase.customer.firstname }},<br>
+        votre commande <strong style="color: #39ff8c;">CMD_{{ '%05d'|format(purchase.id) }}</strong> du {{ purchase.purchasedAt|date('d/m/Y à H:i') }} est confirmée.
+    </p>
+
+    <table style="width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 13px;">
+        <tr>
+            <td style="padding: 8px 0; color: #8a8a9a; border-bottom: 1px solid #26262f;">Article</td>
+            <td style="padding: 8px 0; text-align: right; color: #e8e8f0; border-bottom: 1px solid #26262f;">{{ purchase.articleTitle }}</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px 0; color: #8a8a9a; border-bottom: 1px solid #26262f;">Montant</td>
+            <td style="padding: 8px 0; text-align: right; color: #39ff8c; border-bottom: 1px solid #26262f;">{{ purchase.price ? purchase.price|number_format(2, ',', ' ') ~ ' €' : '—' }}</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px 0; color: #8a8a9a; border-bottom: 1px solid #26262f;">Livraison</td>
+            <td style="padding: 8px 0; text-align: right; color: #e8e8f0; border-bottom: 1px solid #26262f;">{{ purchase.deliveryAddress }}</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px 0; color: #8a8a9a;">Règlement</td>
+            <td style="padding: 8px 0; text-align: right; color: #e8e8f0;">{{ purchase.paymentNote }}</td>
+        </tr>
+    </table>
+
+    <p style="font-size: 11px; color: #ffb347; border: 1px dashed #ffb347; padding: 8px 12px; text-transform: uppercase; letter-spacing: 2px;">
+        Démonstration — aucun paiement réel n'a été effectué.
+    </p>
+
+    <p style="font-size: 10px; color: #55555f; text-transform: uppercase; letter-spacing: 2px;">Ne répondez pas à cet email. Personne ne lit cette boîte.</p>
+</div>

@@ -19,7 +19,9 @@
             </span>
         </div>
 
-        <div class="mt-12 grid gap-10 md:grid-cols-2">
+        {% include 'profile/_tabs.html.twig' with { active: 'profile' } %}
+
+        <div class="grid gap-10 md:grid-cols-2">
             <div>
                 <h2 class="mb-4 border-b border-line pb-2 text-sm font-normal tracking-wider text-ink-dim">// IDENTITÉ DÉCLARÉE</h2>
                 {{ form_start(profileForm, { attr: { class: 'flex flex-col gap-5 border border-line bg-void-card p-6 -rotate-[0.3deg]' } }) }}

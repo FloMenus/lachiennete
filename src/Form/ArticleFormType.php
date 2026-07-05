@@ -8,6 +8,7 @@ use App\Entity\Tag;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -39,6 +40,11 @@ class ArticleFormType extends AbstractType
                 'required' => false,
                 'attr' => ['placeholder' => 'Ex : Prix négociable, troc accepté…'],
                 'help' => 'Obligatoire si pas de prix fixé.',
+            ])
+            ->add('quantity', IntegerType::class, [
+                'label' => 'Quantité en stock',
+                'attr' => ['min' => 0],
+                'help' => 'À 0, l\'annonce passe en SOLD OUT.',
             ])
             ->add('category', EntityType::class, [
                 'label' => 'Catégorie',

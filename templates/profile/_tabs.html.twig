@@ -1,0 +1,5 @@
+{# Expects: active ('profile'|'purchases') #}
+<nav class="mb-10 mt-8 flex border-b border-line text-[11px] uppercase tracking-widest" aria-label="Sections du dossier">
+    <a href="{{ path('app_profile') }}" class="-mb-px border-b-2 px-5 py-3 transition {{ active == 'profile' ? 'border-acid text-acid' : 'border-transparent text-ink-dim hover:text-acid' }}">// Identité</a>
+    <a href="{{ path('app_purchases') }}" class="-mb-px border-b-2 px-5 py-3 transition {{ active == 'purchases' ? 'border-acid text-acid' : 'border-transparent text-ink-dim hover:text-acid' }}">// Mes achats <span class="{{ active == 'purchases' ? 'text-acid-dim' : 'text-ink-faint' }}">[{{ app.user.purchases|length }}]</span></a>
+</nav>

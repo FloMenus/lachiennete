@@ -44,6 +44,13 @@ class Article
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $soldAt = null;
+
+    #[ORM\Column(options: ['default' => 1])]
+    #[Assert\PositiveOrZero(message: 'La quantité ne peut pas être négative.')]
+    private int $quantity = 1;
+
     /**
      * @var Collection<int, Tag>
      */
@@ -169,6 +176,34 @@ class Article
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+    public function getSoldAt(): ?\DateTimeImmutable
+    {
+        return $this->soldAt;
+    }
+
+    public function isSold(): bool
+    {
+        return $this->quantity <= 0;
+    }
+
+    public function getQuantity(): int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): static
+    {
+        $this->quantity = $quantity;
+        $this->soldAt = $quantity <= 0 ? ($this->soldAt ?? new \DateTimeImmutable()) : null;
+
+        return $this;
+    }
+
+    public function decrementQuantity(): static
+    {
+        return $this->setQuantity($this->quantity - 1);
     }
 
     /**

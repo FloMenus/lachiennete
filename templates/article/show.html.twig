@@ -54,12 +54,28 @@
                     {% if article.alternativePayment %}
                         <p class="mt-3 w-fit -rotate-2 border border-dashed border-amber px-2 py-1 text-[10px] uppercase tracking-wide text-amber">{{ article.alternativePayment }}</p>
                     {% endif %}
+                    {% if not article.sold and article.price %}
+                        <p class="mt-3 text-[10px] uppercase tracking-widest {{ article.quantity == 1 ? 'text-blood' : 'text-ink-faint' }}">
+                            {{ article.quantity == 1 ? 'Dernier exemplaire — après, plus rien' : 'Stock restant : ' ~ article.quantity }}
+                        </p>
+                    {% endif %}
 
                     <div class="mt-5 flex flex-col gap-3 border-t border-line pt-5">
-                        <button type="button" class="group relative border border-acid bg-acid px-4 py-3 text-[12px] font-bold uppercase tracking-wider text-void transition hover:-translate-y-0.5 hover:shadow-[3px_3px_0_rgba(57,255,140,0.35)]">
-                            ACHETER MAINTENANT
-                            <span class="absolute -right-1.5 -top-1.5 rotate-6 bg-blood px-1 py-0.5 text-[8px] tracking-widest text-void">SANS REMBOURSEMENT</span>
-                        </button>
+                        {% if article.sold %}
+                            <div class="border border-blood bg-[repeating-linear-gradient(45deg,rgba(255,31,75,0.12)_0,rgba(255,31,75,0.12)_6px,transparent_6px,transparent_12px)] px-4 py-3 text-center text-[12px] font-bold uppercase tracking-wider text-blood">
+                                SOLD OUT{% if article.soldAt %} DEPUIS LE {{ article.soldAt|date('d/m/Y') }}{% endif %} — TROP LENT
+                            </div>
+                        {% elseif article.price and app.user and article.seller and article.seller.id != app.user.id %}
+                            <a href="{{ path('app_checkout', { id: article.id }) }}" class="group relative border border-acid bg-acid px-4 py-3 text-center text-[12px] font-bold uppercase tracking-wider text-void transition hover:-translate-y-0.5 hover:shadow-[3px_3px_0_rgba(57,255,140,0.35)]">
+                                ACHETER MAINTENANT
+                                <span class="absolute -right-1.5 -top-1.5 rotate-6 bg-blood px-1 py-0.5 text-[8px] tracking-widest text-void">SANS REMBOURSEMENT</span>
+                            </a>
+                        {% elseif article.price and not app.user %}
+                            <a href="{{ path('app_login') }}" class="group relative border border-acid bg-acid px-4 py-3 text-center text-[12px] font-bold uppercase tracking-wider text-void transition hover:-translate-y-0.5 hover:shadow-[3px_3px_0_rgba(57,255,140,0.35)]">
+                                ACHETER MAINTENANT
+                                <span class="absolute -right-1.5 -top-1.5 rotate-6 bg-blood px-1 py-0.5 text-[8px] tracking-widest text-void">SANS REMBOURSEMENT</span>
+                            </a>
+                        {% endif %}
                         {% if app.user and article.seller and article.seller.id == app.user.id %}
                             <a href="{{ path('app_conversations') }}" class="border border-violet px-4 py-3 text-center text-[12px] font-bold uppercase tracking-wider text-violet transition hover:bg-violet hover:text-void">
                                 ✉ VOIR MES CONVERSATIONS

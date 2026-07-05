@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LA_CHIENNETÉ — Mes achats{% endblock %}
+
+{% block body %}
+    <section class="mx-auto max-w-6xl px-8 pb-24 pt-14">
+        <h1 class="glitch-text mb-3 -rotate-1 font-display text-[clamp(1.8rem,4vw,2.6rem)] text-ink" data-text="MES ACHATS" data-terminal-target="glitch">MES ACHATS</h1>
+        <p class="text-[11px] uppercase tracking-widest text-ink-faint">Historique complet. Nous n'oublions rien, vous non plus.</p>
+
+        {% include 'profile/_tabs.html.twig' with { active: 'purchases' } %}
+
+        {% if purchases|length > 0 %}
+            <div class="flex flex-col gap-5">
+                {% for purchase in purchases %}
+                    <article class="flex flex-col gap-4 border border-line bg-void-card p-5 sm:flex-row sm:items-center {{ cycle(['rotate-0', '-rotate-[0.3deg]', 'rotate-[0.3deg]'], loop.index0) }}">
+                        <div class="h-20 w-24 shrink-0 overflow-hidden border border-line bg-void-raised">
+                            {% set image = purchase.article ? purchase.article.images.first : null %}
+                            {% if image %}
+                                <img src="{{ asset('uploads/articles/' ~ image.filename) }}" alt="{{ purchase.articleTitle }}" loading="lazy" class="h-full w-full object-cover grayscale-[60%]">
+                            {% else %}
+                                <div class="flex h-full items-center justify-center text-[9px] tracking-widest text-ink-faint">ARCHIVÉ</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="flex-1">
+                            <p class="text-[10px] uppercase tracking-[0.2em] text-ink-faint">CMD_{{ '%05d'|format(purchase.id) }} — {{ purchase.purchasedAt|date('d/m/Y à H:i') }}</p>
+                            <h2 class="mt-1 font-display text-lg text-ink">
+                                {% if purchase.article %}
+                                    <a href="{{ path('app_article_show', { id: purchase.article.id }) }}" class="hover:text-acid">{{ purchase.articleTitle }}</a>
+                                {% else %}
+                                    {{ purchase.articleTitle }} <span class="text-[10px] uppercase tracking-widest text-ink-faint">[annonce disparue]</span>
+                                {% endif %}
+                            </h2>
+                            {% if purchase.deliveryAddress %}
+                                <p class="mt-1 text-[11px] text-ink-dim">Livré à : {{ purchase.deliveryAddress }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="flex shrink-0 flex-col items-end gap-2">
+                            <span class="font-display text-xl text-acid">{{ purchase.price ? purchase.price|number_format(2, ',', ' ') ~ ' €' : '—' }}</span>
+                            <a href="{{ path('app_purchase_confirmation', { id: purchase.id }) }}" class="border border-line px-3 py-1.5 text-[10px] uppercase tracking-widest text-ink-dim transition hover:border-acid hover:text-acid">Reçu →</a>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="border border-dashed border-line bg-void-card p-10 text-center">
+                <p class="italic text-ink-faint">Aucun achat. Votre dossier est vide, c'est louche.</p>
+                <a href="{{ path('app_home') }}" class="mt-6 inline-block border border-acid px-4 py-3 text-[12px] font-bold uppercase tracking-wider text-acid transition hover:bg-acid hover:text-void">Parcourir les annonces</a>
+            </div>
+        {% endif %}
+    </section>
+{% endblock %}

@@ -28,6 +28,12 @@
                     </div>
 
                     <div class="flex shrink-0 items-center gap-3">
+                        {% if article.sold %}
+                            <span class="border border-blood px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-blood">SOLD OUT</span>
+                        {% else %}
+                            <span class="border border-line px-2 py-0.5 text-[10px] uppercase tracking-widest text-ink-dim">Stock : <span class="text-acid">{{ article.quantity }}</span></span>
+                        {% endif %}
+
                         {% if article.price %}
                             <span class="text-sm text-acid">{{ article.price|number_format(2, ',', ' ') }} €</span>
                         {% else %}
