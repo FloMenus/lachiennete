@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LA_CHIENNETÉ — ACCÈS RÉVOQUÉ{% endblock %}
+
+{% block body %}
+    <section class="flex min-h-[80vh] flex-col items-center justify-center px-8 text-center">
+        <p class="mb-6 text-[11px] uppercase tracking-[0.3em] text-blood">[ STATUT : PERSONA NON GRATA ]</p>
+
+        <img src="{{ asset('uploads/misc/rotating-skull.gif') }}" alt="" aria-hidden="true" class="mb-6 h-24 w-24 opacity-80">
+
+        <h1 class="glitch-text font-display text-[clamp(4rem,15vw,12rem)] leading-none text-blood [text-shadow:0_0_40px_rgba(255,31,75,0.5)]"
+            data-text="BANNI"
+            data-terminal-target="glitch">
+            BANNI
+        </h1>
+
+        <p class="mt-8 max-w-[38ch] text-sm text-ink-dim">
+            Votre accès à la plateforme a été révoqué par un administrateur.
+            Vos activités ont été jugées incompatibles avec nos standards — ce qui, ici, est un exploit.
+            RIP bozo.
+        </p>
+
+        <p class="mt-3 text-[11px] text-ink-faint">
+            Identifiant : <span class="text-blood">Agent_{{ app.user.id }}{{ app.user.lastname|slice(0,1)|upper }}</span>
+            — Connexion active depuis {{ app.user.createdAt|date('d/m/Y') }}
+        </p>
+
+        <div class="mt-12 border border-blood/30 bg-blood/5 px-8 py-6">
+            <p class="text-[11px] uppercase tracking-widest text-ink-faint">Seule action disponible</p>
+            <a href="{{ path('app_logout') }}"
+                class="mt-3 inline-block border border-blood px-6 py-3 text-[12px] font-bold uppercase tracking-wider text-blood transition hover:bg-blood hover:text-void">
+                Se déconnecter
+            </a>
+        </div>
+    </section>
+{% endblock %}

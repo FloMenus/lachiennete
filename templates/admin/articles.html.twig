@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LA_CHIENNETÉ — Admin / Annonces{% endblock %}
+
+{% block body %}
+    <section class="mx-auto max-w-5xl px-8 pb-24 pt-14">
+        <nav class="mb-8 flex items-center gap-2 text-[11px] uppercase tracking-widest text-ink-faint">
+            <a href="{{ path('app_admin') }}" class="hover:text-acid">// Admin</a>
+            <span>/</span>
+            <span class="text-ink-dim">Annonces</span>
+        </nav>
+
+        <h1 class="font-display text-[clamp(1.8rem,4vw,3rem)] leading-tight text-ink">ANNONCES PUBLIÉES</h1>
+        <p class="mt-2 text-sm text-ink-dim">{{ articles|length }} annonce{{ articles|length > 1 ? 's' : '' }} en ligne.</p>
+
+        <div class="mt-10 flex flex-col gap-3">
+            {% for article in articles %}
+                <div class="flex items-center justify-between gap-6 border border-line bg-void-card px-5 py-4">
+                    <div class="min-w-0 flex-1">
+                        <a href="{{ path('app_article_show', { id: article.id }) }}" class="font-display text-base text-ink hover:text-acid">{{ article.title }}</a>
+                        <p class="mt-0.5 text-[11px] text-ink-faint">
+                            REF_{{ '%05d'|format(article.id) }}
+                            {% if article.category %} — <span class="text-violet">{{ article.category.name }}</span>{% endif %}
+                            — Agent_{{ article.seller.id }}{{ article.seller.lastname|slice(0,1)|upper }}
+                            — {{ article.createdAt|date('d/m/Y') }}
+                        </p>
+                    </div>
+
+                    <div class="flex shrink-0 items-center gap-3">
+                        {% if article.price %}
+                            <span class="text-sm text-acid">{{ article.price|number_format(2, ',', ' ') }} €</span>
+                        {% else %}
+                            <span class="text-[11px] text-blood">DEVIS</span>
+                        {% endif %}
+
+                        <form method="post" action="{{ path('app_admin_article_delete', { id: article.id }) }}"
+                            onsubmit="return confirm('Supprimer « {{ article.title|e('js') }} » ? Cette action est irréversible.')">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete_article_' ~ article.id) }}">
+                            <button type="submit" class="border border-blood px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-blood transition hover:bg-blood hover:text-void">
+                                Supprimer
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            {% else %}
+                <p class="border border-line bg-void-card px-6 py-8 text-sm italic text-ink-faint">Aucune annonce publiée.</p>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

@@ -9,6 +9,9 @@
         <a href="{{ path('app_home') }}#listing" class="translate-y-0.5 hover:text-blood">Annonces</a>
         <a href="{{ path('app_home') }}#categories" class="hover:text-blood">Catégories</a>
         {% if app.user %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('app_admin') }}" class="text-blood hover:text-ink">Admin</a>
+            {% endif %}
             {% if is_granted('ROLE_CLIENT') %}
                 <a href="{{ path('app_favorites') }}" class="hover:text-blood">♥ Favoris</a>
             {% endif %}

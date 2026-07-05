@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LA_CHIENNETÉ — Panneau d'administration{% endblock %}
+
+{% block body %}
+    <section class="mx-auto max-w-5xl px-8 pb-24 pt-14">
+        <p class="mb-4 text-[11px] uppercase tracking-[0.25em] text-blood">[ ACCÈS ADMINISTRATEUR // NIVEAU MAXIMAL ]</p>
+        <h1 class="font-display text-[clamp(2rem,5vw,4rem)] leading-tight text-ink">PANNEAU DE CONTRÔLE</h1>
+
+        <div class="mt-12 grid grid-cols-3 gap-6">
+            <div class="border border-line bg-void-card p-6">
+                <span class="font-display text-4xl text-acid">{{ articleCount }}</span>
+                <p class="mt-1 text-[10px] uppercase tracking-widest text-ink-faint">annonces publiées</p>
+            </div>
+            <div class="border border-line bg-void-card p-6">
+                <span class="font-display text-4xl text-violet">{{ userCount }}</span>
+                <p class="mt-1 text-[10px] uppercase tracking-widest text-ink-faint">utilisateurs</p>
+            </div>
+            <div class="border border-line bg-void-card p-6">
+                <span class="font-display text-4xl text-blood">{{ bannedCount }}</span>
+                <p class="mt-1 text-[10px] uppercase tracking-widest text-ink-faint">bannis</p>
+            </div>
+        </div>
+
+        <div class="mt-10 flex flex-col gap-4 border-t border-line pt-8 sm:flex-row">
+            <a href="{{ path('app_admin_articles') }}" class="flex-1 border border-acid-dim px-6 py-5 text-center transition hover:border-acid hover:bg-acid hover:text-void">
+                <p class="text-sm font-bold uppercase tracking-wider text-acid-dim group-hover:text-void">Gérer les annonces →</p>
+                <p class="mt-1 text-[11px] text-ink-faint">Consulter et supprimer les annonces publiées</p>
+            </a>
+            <a href="{{ path('app_admin_users') }}" class="flex-1 border border-blood px-6 py-5 text-center transition hover:bg-blood hover:text-void">
+                <p class="text-sm font-bold uppercase tracking-wider text-blood">Gérer les utilisateurs →</p>
+                <p class="mt-1 text-[11px] text-ink-faint">Bannir ou débannir des profils</p>
+            </a>
+        </div>
+    </section>
+{% endblock %}

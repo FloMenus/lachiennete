@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LA_CHIENNETÉ — Admin / Utilisateurs{% endblock %}
+
+{% block body %}
+    <section class="mx-auto max-w-5xl px-8 pb-24 pt-14">
+        <nav class="mb-8 flex items-center gap-2 text-[11px] uppercase tracking-widest text-ink-faint">
+            <a href="{{ path('app_admin') }}" class="hover:text-acid">// Admin</a>
+            <span>/</span>
+            <span class="text-ink-dim">Utilisateurs</span>
+        </nav>
+
+        <h1 class="font-display text-[clamp(1.8rem,4vw,3rem)] leading-tight text-ink">UTILISATEURS</h1>
+        <p class="mt-2 text-sm text-ink-dim">{{ users|length }} profil{{ users|length > 1 ? 's' : '' }} enregistré{{ users|length > 1 ? 's' : '' }}.</p>
+
+        <div class="mt-10 flex flex-col gap-3">
+            {% for user in users %}
+                {% set isBanned = 'ROLE_BANNI' in user.roles %}
+                {% set isCurrentUser = app.user and app.user.id == user.id %}
+                <div class="flex items-center justify-between gap-6 border {{ isBanned ? 'border-blood/40 bg-blood/5' : 'border-line bg-void-card' }} px-5 py-4">
+                    <div class="min-w-0 flex-1">
+                        <p class="text-sm text-ink {{ isBanned ? 'line-through text-ink-faint' : '' }}">
+                            {{ user.firstname }} {{ user.lastname }}
+                            {% if isCurrentUser %}<span class="ml-2 text-[10px] text-acid">(vous)</span>{% endif %}
+                        </p>
+                        <p class="mt-0.5 text-[11px] text-ink-faint">
+                            {{ user.email }}
+                            — Agent_{{ user.id }}
+                            — inscrit le {{ user.createdAt|date('d/m/Y') }}
+                        </p>
+                        <div class="mt-1 flex flex-wrap gap-1.5">
+                            {% for role in user.roles %}
+                                {% if role != 'ROLE_USER' %}
+                                    <span class="px-1.5 py-0.5 text-[9px] uppercase tracking-wide
+                                        {{ role == 'ROLE_ADMIN' or role == 'ROLE_SUPER_ADMIN' ? 'bg-violet text-void' :
+                                           role == 'ROLE_BANNI' ? 'bg-blood text-void' :
+                                           role == 'ROLE_PRESTATAIRE' ? 'border border-amber text-amber' :
+                                           'border border-ink-faint text-ink-faint' }}">
+                                        {{ role|replace({'ROLE_': ''}) }}
+                                    </span>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    {% if not isCurrentUser %}
+                        <form method="post" action="{{ path('app_admin_user_ban', { id: user.id }) }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('ban_user_' ~ user.id) }}">
+                            <button type="submit"
+                                class="border px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider transition
+                                    {{ isBanned
+                                        ? 'border-acid text-acid hover:bg-acid hover:text-void'
+                                        : 'border-blood text-blood hover:bg-blood hover:text-void' }}">
+                                {{ isBanned ? 'Débannir' : 'Bannir' }}
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+            {% else %}
+                <p class="border border-line bg-void-card px-6 py-8 text-sm italic text-ink-faint">Aucun utilisateur.</p>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}
