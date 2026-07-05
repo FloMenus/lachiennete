@@ -1,0 +1,5 @@
+<turbo-stream action="replace" target="favorite-{{ article.id }}">
+    <template>
+        {% include 'partials/_favorite_btn.html.twig' with { article: article, isFavorite: isFavorite } %}
+    </template>
+</turbo-stream>

@@ -9,6 +9,9 @@
         <a href="{{ path('app_home') }}#listing" class="translate-y-0.5 hover:text-blood">Annonces</a>
         <a href="{{ path('app_home') }}#categories" class="hover:text-blood">Catégories</a>
         {% if app.user %}
+            {% if is_granted('ROLE_CLIENT') %}
+                <a href="{{ path('app_favorites') }}" class="hover:text-blood">♥ Favoris</a>
+            {% endif %}
             <a href="{{ path('app_profile') }}" class="translate-y-0.5 text-acid hover:text-blood">Mon dossier</a>
             <a href="{{ path('app_logout') }}" class="text-ink-faint hover:text-blood">Déconnexion</a>
         {% else %}

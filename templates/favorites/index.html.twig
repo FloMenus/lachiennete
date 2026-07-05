@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LA_CHIENNETÉ — Mes favoris{% endblock %}
+
+{% block body %}
+    <section class="mx-auto max-w-5xl px-8 pb-24 pt-14">
+        <p class="mb-4 text-[11px] uppercase tracking-[0.25em] text-violet">[ LISTE PERSONNELLE // ACCÈS RESTREINT ]</p>
+        <h1 class="font-display text-[clamp(2rem,5vw,4rem)] leading-tight text-ink">MES FAVORIS</h1>
+        <p class="mt-3 text-sm text-ink-dim">{{ favorites|length }} annonce{{ favorites|length > 1 ? 's' : '' }} mise{{ favorites|length > 1 ? 's' : '' }} de côté.</p>
+
+        <div class="mt-12">
+            {% if favorites|length > 0 %}
+                <div class="grid grid-cols-[repeat(auto-fill,minmax(255px,1fr))] gap-7">
+                    {% for article in favorites %}
+                        {% set tilt = cycle(['-rotate-2', '-rotate-1', 'rotate-0', 'rotate-1', 'rotate-2'], loop.index0) %}
+                        {% include 'partials/_article_card.html.twig' with { article: article, tilt: tilt, featured: false } only %}
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="border border-line bg-void-card px-6 py-8 text-sm italic text-ink-faint">
+                    Aucun favori. Parcourez les <a href="{{ path('app_home') }}#listing" class="text-acid hover:underline">annonces</a> et revenez.
+                </p>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,17 @@
+{# Expects: article (App\Entity\Article). isFavorite est calculé automatiquement si non fourni. #}
+<div id="favorite-{{ article.id }}">
+    {% if app.user and is_granted('ROLE_CLIENT') %}
+        {% set isFavorite = isFavorite is defined ? isFavorite : app.user.favorites.contains(article) %}
+        <form method="post" action="{{ path('app_article_favorite', { id: article.id }) }}">
+            <input type="hidden" name="_token" value="{{ csrf_token('favorite_' ~ article.id) }}">
+            <button type="submit"
+                title="{{ isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris' }}"
+                class="flex items-center gap-1.5 border px-3 py-2 text-[11px] font-bold uppercase tracking-wider transition
+                    {{ isFavorite
+                        ? 'border-blood bg-blood text-void hover:bg-transparent hover:text-blood'
+                        : 'border-ink-faint text-ink-faint hover:border-blood hover:text-blood' }}">
+                {{ isFavorite ? '♥' : '♡' }} {{ isFavorite ? 'FAVORI' : 'FAVORIS' }}
+            </button>
+        </form>
+    {% endif %}
+</div>

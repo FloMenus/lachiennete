@@ -45,7 +45,8 @@
         {% endif %}
     </div>
 
-    <div class="border-t border-line px-4 py-3">
-        <a href="{{ path('app_article_show', { id: article.id }) }}" class="block border border-acid-dim px-3 py-2 text-center text-[11px] font-bold uppercase tracking-wider text-acid-dim transition hover:border-acid hover:bg-acid hover:text-void">VOIR L'ANNONCE →</a>
+    <div class="flex items-stretch gap-0 border-t border-line">
+        <a href="{{ path('app_article_show', { id: article.id }) }}" class="flex-1 px-3 py-3 text-center text-[11px] font-bold uppercase tracking-wider text-acid-dim transition hover:border-acid hover:bg-acid hover:text-void border-r border-line">VOIR L'ANNONCE →</a>
+        {% include 'partials/_favorite_btn.html.twig' with { article: article } %}
     </div>
 </article>
