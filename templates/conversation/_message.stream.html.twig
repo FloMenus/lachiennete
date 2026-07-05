@@ -1,0 +1,5 @@
+{# Turbo Stream publié sur Mercure : ajoute le message chez les deux participants.
+   Le dédoublonnage par id="message_X" évite le doublon côté expéditeur. #}
+<turbo-stream action="append" target="messages">
+    <template>{{ include('conversation/_message.html.twig', { message }) }}</template>
+</turbo-stream>

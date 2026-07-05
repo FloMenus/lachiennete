@@ -23,6 +23,7 @@ Services once running:
 - App: http://localhost:8089 (PHP built-in server inside the container)
 - Adminer (DB UI): http://localhost:8088
 - Mailpit (mail catcher): http://localhost:8025
+- Mercure hub (real-time, used by the messaging feature): http://localhost:8090/.well-known/mercure — debug UI at `/.well-known/mercure/ui/`; in-container publish URL is `http://mercure/.well-known/mercure`
 - PostgreSQL on host port **5439** (in-container DSN uses `database:5432`)
 
 The container entrypoint (`docker/entrypoint.sh`) automatically runs `composer install`, warms the cache, and applies pending migrations on startup. A separate `messenger-worker` container consumes the `async` Messenger transport (Doctrine-backed).

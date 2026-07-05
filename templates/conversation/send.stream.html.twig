@@ -1,0 +1,6 @@
+{# Réponse Turbo à l'envoi d'un message : ajoute le message (dédoublonné avec
+   la diffusion Mercure) et remet un formulaire vierge. #}
+{{ include('conversation/_message.stream.html.twig', { message }) }}
+<turbo-stream action="replace" target="message-form">
+    <template>{{ include('conversation/_form.html.twig', { form, conversation }) }}</template>
+</turbo-stream>

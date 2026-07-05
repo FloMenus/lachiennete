@@ -1,0 +1,13 @@
+{# Expects: form (MessageFormType view), conversation #}
+{{ form_start(form, {
+    action: path('app_conversation_send', { id: conversation.id }),
+    attr: { id: 'message-form', class: 'mt-4 flex flex-col gap-3' },
+}) }}
+    {{ form_row(form.content) }}
+    <div class="flex items-center justify-between gap-4">
+        <p class="text-[9px] uppercase tracking-widest text-ink-faint">Canal chiffré*. (*non.) Réponse non garantie.</p>
+        <button type="submit" class="border border-acid bg-acid px-5 py-2 text-[12px] font-bold uppercase tracking-wider text-void transition hover:-translate-y-0.5 hover:shadow-[3px_3px_0_rgba(57,255,140,0.35)]">
+            TRANSMETTRE ▸
+        </button>
+    </div>
+{{ form_end(form) }}

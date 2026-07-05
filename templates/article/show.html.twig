@@ -60,9 +60,22 @@
                             ACHETER MAINTENANT
                             <span class="absolute -right-1.5 -top-1.5 rotate-6 bg-blood px-1 py-0.5 text-[8px] tracking-widest text-void">SANS REMBOURSEMENT</span>
                         </button>
-                        <button type="button" class="border border-violet px-4 py-3 text-[12px] font-bold uppercase tracking-wider text-violet transition hover:bg-violet hover:text-void">
-                            ✉ CONTACTER LE VENDEUR
-                        </button>
+                        {% if app.user and article.seller and article.seller.id == app.user.id %}
+                            <a href="{{ path('app_conversations') }}" class="border border-violet px-4 py-3 text-center text-[12px] font-bold uppercase tracking-wider text-violet transition hover:bg-violet hover:text-void">
+                                ✉ VOIR MES CONVERSATIONS
+                            </a>
+                        {% elseif app.user %}
+                            <form method="post" action="{{ path('app_conversation_start', { id: article.id }) }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token('contact_' ~ article.id) }}">
+                                <button type="submit" class="w-full border border-violet px-4 py-3 text-[12px] font-bold uppercase tracking-wider text-violet transition hover:bg-violet hover:text-void">
+                                    ✉ CONTACTER LE VENDEUR
+                                </button>
+                            </form>
+                        {% else %}
+                            <a href="{{ path('app_login') }}" class="border border-violet px-4 py-3 text-center text-[12px] font-bold uppercase tracking-wider text-violet transition hover:bg-violet hover:text-void">
+                                ✉ CONTACTER LE VENDEUR
+                            </a>
+                        {% endif %}
                         {% include 'partials/_favorite_btn.html.twig' with { article: article } %}
                         <p class="text-center text-[9px] uppercase tracking-widest text-ink-faint">Canal chiffré*. Réponse non garantie.</p>
                     </div>
