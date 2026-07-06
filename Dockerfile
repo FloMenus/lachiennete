@@ -33,12 +33,13 @@ COPY . .
 ENV APP_ENV=prod
 ENV APP_SECRET=buildsecret
 
+RUN mkdir -p var/cache var/log public/uploads/articles public/uploads/misc
+
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev --no-scripts --ignore-platform-req=ext-amqp
 RUN php bin/console importmap:install
 RUN php bin/console tailwind:build --minify
 
-RUN mkdir -p var/cache var/log public/uploads/articles public/uploads/misc \
-    && chown -R www-data:www-data var public/uploads
+RUN chown -R www-data:www-data var public/uploads
 
 EXPOSE 8000
 
