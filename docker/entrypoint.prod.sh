@@ -1,6 +1,12 @@
 #!/bin/sh
 set -e
 
+echo "==> Installation des assets importmap..."
+php bin/console importmap:install
+
+echo "==> Compilation de Tailwind CSS..."
+php bin/console tailwind:build --minify
+
 echo "==> Warm-up du cache..."
 php bin/console cache:warmup
 
