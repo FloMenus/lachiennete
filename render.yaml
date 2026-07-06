@@ -18,3 +18,9 @@ services:
         value: '^https://.*\.onrender\.com$'
       - key: DEFAULT_URI
         value: https://lachiennete.onrender.com
+      - key: MERCURE_URL
+        value: http://localhost/.well-known/mercure
+      - key: MERCURE_PUBLIC_URL
+        value: https://lachiennete.onrender.com/.well-known/mercure
+      - key: MERCURE_JWT_SECRET
+        generateValue: true
