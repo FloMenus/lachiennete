@@ -14,3 +14,7 @@ services:
         value: sync://
       - key: MAILER_DSN
         value: null://null
+      - key: CORS_ALLOW_ORIGIN
+        value: '^https://.*\.onrender\.com$'
+      - key: DEFAULT_URI
+        value: https://lachiennete.onrender.com
