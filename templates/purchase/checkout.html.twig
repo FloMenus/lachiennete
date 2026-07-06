@@ -101,7 +101,7 @@
                 </fieldset>
 
                 <button type="submit" class="group relative border border-acid bg-acid px-4 py-4 text-[13px] font-bold uppercase tracking-wider text-void transition hover:-translate-y-0.5 hover:shadow-[3px_3px_0_rgba(57,255,140,0.35)]">
-                    CONFIRMER LA COMMANDE — {{ article.price|number_format(2, ',', ' ') }} €
+                    CONFIRMER LA COMMANDE — {{ article.price|price }}
                     <span class="absolute -right-1.5 -top-1.5 rotate-6 bg-blood px-1 py-0.5 text-[8px] tracking-widest text-void">SANS REMBOURSEMENT</span>
                 </button>
             </form>
@@ -121,9 +121,9 @@
                     <p class="mt-1 text-[11px] text-ink-dim">Vendu par Agent_{{ article.seller.id }}{{ article.seller.lastname|slice(0, 1)|upper }}</p>
                 {% endif %}
                 <dl class="mt-5 flex flex-col gap-2 border-t border-line pt-4 text-sm">
-                    <div class="flex justify-between"><dt class="text-ink-dim">Article</dt><dd class="text-ink">{{ article.price|number_format(2, ',', ' ') }} €</dd></div>
+                    <div class="flex justify-between"><dt class="text-ink-dim">Article</dt><dd class="text-ink">{{ article.price|price }}</dd></div>
                     <div class="flex justify-between"><dt class="text-ink-dim">Livraison discrète</dt><dd class="text-acid">Offerte*</dd></div>
-                    <div class="flex justify-between border-t border-line pt-2"><dt class="uppercase tracking-widest text-ink-dim">Total</dt><dd class="font-display text-2xl text-acid">{{ article.price|number_format(2, ',', ' ') }} €</dd></div>
+                    <div class="flex justify-between border-t border-line pt-2"><dt class="uppercase tracking-widest text-ink-dim">Total</dt><dd class="font-display text-2xl text-acid">{{ article.price|price }}</dd></div>
                 </dl>
                 <p class="mt-4 text-[9px] uppercase tracking-widest text-ink-faint">*Rien n'est jamais vraiment offert.</p>
             </aside>

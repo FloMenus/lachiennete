@@ -47,7 +47,7 @@
 
                 <div class="border border-line bg-void-card p-5">
                     {% if article.price %}
-                        <span class="font-display text-4xl text-acid">{{ article.price|number_format(2, ',', ' ') }} €</span>
+                        <span class="font-display text-4xl text-acid">{{ article.price|price }}</span>
                     {% else %}
                         <span class="inline-block bg-[repeating-linear-gradient(45deg,rgba(255,31,75,0.08)_0,rgba(255,31,75,0.08)_4px,transparent_4px,transparent_8px)] px-2 py-1 font-mono text-sm tracking-wide text-blood">PRIX SUR DEVIS</span>
                     {% endif %}

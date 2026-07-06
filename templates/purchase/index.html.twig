@@ -37,7 +37,7 @@
                         </div>
 
                         <div class="flex shrink-0 flex-col items-end gap-2">
-                            <span class="font-display text-xl text-acid">{{ purchase.price ? purchase.price|number_format(2, ',', ' ') ~ ' €' : '—' }}</span>
+                            <span class="font-display text-xl text-acid">{{ purchase.price|price }}</span>
                             <div class="flex gap-2">
                                 {% if purchase.article %}
                                     {% if purchase.article.id in reviewedArticleIds %}

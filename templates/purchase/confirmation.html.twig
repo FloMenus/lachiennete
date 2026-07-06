@@ -22,7 +22,7 @@
                 </div>
                 <div class="flex justify-between gap-6">
                     <dt class="shrink-0 text-[10px] uppercase tracking-[0.2em] text-ink-dim">Montant</dt>
-                    <dd class="font-display text-xl text-acid">{{ purchase.price ? purchase.price|number_format(2, ',', ' ') ~ ' €' : '—' }}</dd>
+                    <dd class="font-display text-xl text-acid">{{ purchase.price|price }}</dd>
                 </div>
                 <div class="flex justify-between gap-6">
                     <dt class="shrink-0 text-[10px] uppercase tracking-[0.2em] text-ink-dim">Livraison</dt>

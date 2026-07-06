@@ -14,7 +14,7 @@
         </tr>
         <tr>
             <td style="padding: 8px 0; color: #8a8a9a; border-bottom: 1px solid #26262f;">Montant</td>
-            <td style="padding: 8px 0; text-align: right; color: #39ff8c; border-bottom: 1px solid #26262f;">{{ purchase.price ? purchase.price|number_format(2, ',', ' ') ~ ' €' : '—' }}</td>
+            <td style="padding: 8px 0; text-align: right; color: #39ff8c; border-bottom: 1px solid #26262f;">{{ purchase.price|price(purchase.customer.currency) }}</td>
         </tr>
         <tr>
             <td style="padding: 8px 0; color: #8a8a9a; border-bottom: 1px solid #26262f;">Livraison</td>
