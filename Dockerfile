@@ -33,7 +33,7 @@ COPY . .
 ENV APP_ENV=prod
 ENV APP_SECRET=buildsecret
 
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev --no-scripts
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev --no-scripts --ignore-platform-req=ext-amqp
 RUN php bin/console importmap:install
 RUN php bin/console tailwind:build --minify
 
