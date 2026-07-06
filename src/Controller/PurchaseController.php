@@ -7,6 +7,7 @@ use App\Entity\Purchase;
 use App\Entity\ShippingAddress;
 use App\Entity\User;
 use App\Repository\PurchaseRepository;
+use App\Repository\ReviewRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -80,6 +82,18 @@ final class PurchaseController extends AbstractController
                         ->context(['purchase' => $purchase])
                 );
 
+                $mailer->send(
+                    (new TemplatedEmail())
+                        ->from(new Address('no-reply@la-chiennete.onion', 'LA_CHIENNETÉ'))
+                        ->to(new Address($user->getEmail(), $user->getFirstname().' '.$user->getLastname()))
+                        ->subject(sprintf('Votre avis sur « %s »', $purchase->getArticleTitle()))
+                        ->htmlTemplate('emails/review_request.html.twig')
+                        ->context([
+                            'purchase' => $purchase,
+                            'reviewUrl' => $this->generateUrl('app_review_new', ['id' => $article->getId()], UrlGeneratorInterface::ABSOLUTE_URL),
+                        ])
+                );
+
                 $this->addFlash('success', 'Commande confirmée. Aucun paiement réel n\'a été effectué, personne n\'a été débité.');
 
                 return $this->redirectToRoute('app_purchase_confirmation', ['id' => $purchase->getId()]);
@@ -107,13 +121,14 @@ final class PurchaseController extends AbstractController
     }
 
     #[Route('/purchases', name: 'app_purchases', methods: ['GET'])]
-    public function index(PurchaseRepository $purchaseRepository): Response
+    public function index(PurchaseRepository $purchaseRepository, ReviewRepository $reviewRepository): Response
     {
         /** @var User $user */
         $user = $this->getUser();
 
         return $this->render('purchase/index.html.twig', [
             'purchases' => $purchaseRepository->findByCustomer($user),
+            'reviewedArticleIds' => $reviewRepository->findReviewedArticleIds($user),
         ]);
     }
 

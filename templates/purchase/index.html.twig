@@ -38,7 +38,16 @@
 
                         <div class="flex shrink-0 flex-col items-end gap-2">
                             <span class="font-display text-xl text-acid">{{ purchase.price ? purchase.price|number_format(2, ',', ' ') ~ ' €' : '—' }}</span>
-                            <a href="{{ path('app_purchase_confirmation', { id: purchase.id }) }}" class="border border-line px-3 py-1.5 text-[10px] uppercase tracking-widest text-ink-dim transition hover:border-acid hover:text-acid">Reçu →</a>
+                            <div class="flex gap-2">
+                                {% if purchase.article %}
+                                    {% if purchase.article.id in reviewedArticleIds %}
+                                        <a href="{{ path('app_article_show', { id: purchase.article.id }) }}" class="border border-line px-3 py-1.5 text-[10px] uppercase tracking-widest text-ink-faint transition hover:border-acid hover:text-acid">Avis déposé ✓</a>
+                                    {% else %}
+                                        <a href="{{ path('app_review_new', { id: purchase.article.id }) }}" class="border border-acid px-3 py-1.5 text-[10px] uppercase tracking-widest text-acid transition hover:bg-acid hover:text-void">Laisser un avis</a>
+                                    {% endif %}
+                                {% endif %}
+                                <a href="{{ path('app_purchase_confirmation', { id: purchase.id }) }}" class="border border-line px-3 py-1.5 text-[10px] uppercase tracking-widest text-ink-dim transition hover:border-acid hover:text-acid">Reçu →</a>
+                            </div>
                         </div>
                     </article>
                 {% endfor %}

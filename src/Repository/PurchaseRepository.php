@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Article;
 use App\Entity\Purchase;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -31,5 +32,10 @@ class PurchaseRepository extends ServiceEntityRepository
             ->orderBy('p.purchasedAt', 'DESC')
             ->getQuery()
             ->getResult();
+    }
+
+    public function hasPurchased(User $customer, Article $article): bool
+    {
+        return $this->count(['customer' => $customer, 'article' => $article]) > 0;
     }
 }

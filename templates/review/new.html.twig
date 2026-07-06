@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LA_CHIENNETÉ — Laisser un avis{% endblock %}
+
+{% block body %}
+    <section class="mx-auto max-w-2xl px-8 pb-24 pt-14">
+        <h1 class="glitch-text mb-3 -rotate-1 font-display text-[clamp(1.8rem,4vw,2.6rem)] text-ink" data-text="VOTRE AVIS" data-terminal-target="glitch">VOTRE AVIS</h1>
+        <p class="text-[11px] uppercase tracking-widest text-ink-faint">Public, définitif, consigné au dossier.</p>
+
+        <div class="mt-10 border border-line bg-void-card p-6" data-controller="review-gun">
+            <p class="text-[10px] uppercase tracking-[0.2em] text-ink-faint">Article concerné</p>
+            <h2 class="mt-1 font-display text-lg text-ink">
+                <a href="{{ path('app_article_show', { id: article.id }) }}" class="hover:text-acid">{{ article.title }}</a>
+            </h2>
+
+            {{ form_start(form, { attr: { class: 'mt-6 flex flex-col gap-6' } }) }}
+                <div class="flex flex-col gap-1.5">
+                    <span class="text-[10px] uppercase tracking-[0.2em] text-ink-dim">Note</span>
+                    <div class="flex flex-wrap gap-2">
+                        {% for choice in form.rating %}
+                            <label class="cursor-pointer">
+                                {{ form_widget(choice, { attr: { class: 'peer sr-only', 'data-action': 'change->review-gun#update' } }) }}
+                                <span class="block border border-line px-3 py-2 text-[13px] tracking-[0.2em] text-ink-faint transition peer-checked:border-acid peer-checked:text-amber peer-focus-visible:border-acid" aria-label="{{ choice.vars.value }} sur 5">{{ '★★★★★'|slice(0, choice.vars.value) }}</span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                    {{ form_errors(form.rating) }}
+                </div>
+
+                <div class="gun-holster" data-review-gun-target="holster" aria-hidden="true">
+                    <div>
+                        <div class="gun-body flex flex-col items-center gap-3 border border-blood bg-[rgba(255,31,75,0.05)] px-4 py-6">
+                            <svg viewBox="0 0 240 170" class="h-36 w-auto text-blood" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                {# dessus de la culasse, en perspective #}
+                                <path d="M92 36 L102 10 h36 L148 36"/>
+                                {# guidon #}
+                                <rect x="113" y="2" width="14" height="8"/>
+                                {# face avant de la culasse #}
+                                <rect x="88" y="36" width="64" height="60" rx="6"/>
+                                {# stries de préhension #}
+                                <path d="M96 44 v44 M144 44 v44" stroke-width="2"/>
+                                {# bouche du canon, braquée sur vous #}
+                                <circle cx="120" cy="58" r="15"/>
+                                <circle cx="120" cy="58" r="8" fill="#060608" stroke-width="2"/>
+                                {# point rouge du laser #}
+                                <circle class="gun-laser" cx="120" cy="58" r="3" fill="currentColor" stroke="none"/>
+                                {# ressort récupérateur sous le canon #}
+                                <circle cx="120" cy="84" r="5.5"/>
+                                {# carcasse sous la culasse #}
+                                <path d="M92 96 h56 l-5 12 h-46 Z" stroke-width="2"/>
+                                {# pontet #}
+                                <path d="M103 108 q17 26 34 0"/>
+                                {# crosse qui fuit vers le bas, avec la main du vendeur #}
+                                <path d="M105 108 l-11 42 M135 108 l13 40 M94 150 q26 16 54 0" stroke-width="2" opacity="0.5"/>
+                                <path d="M99 128 h42 M97 138 h46" stroke-width="2" opacity="0.35"/>
+                            </svg>
+                            <p class="text-center text-[11px] font-bold uppercase tracking-[0.25em] text-blood">Une étoile ? Réfléchissez bien.</p>
+                            <p class="text-center text-[10px] uppercase tracking-widest text-ink-faint">Toute évaluation est définitive. Vous aussi.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-1.5">
+                    <span class="text-[10px] uppercase tracking-[0.2em] text-ink-dim">Commentaire (optionnel)</span>
+                    {{ form_widget(form.comment) }}
+                    {{ form_errors(form.comment) }}
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <a href="{{ path('app_purchases') }}" class="text-[10px] uppercase tracking-widest text-ink-faint transition hover:text-ink-dim">← Mes achats</a>
+                    <button type="submit" class="border border-acid px-4 py-3 text-[12px] font-bold uppercase tracking-wider text-acid transition hover:bg-acid hover:text-void">Publier l'avis</button>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </section>
+{% endblock %}

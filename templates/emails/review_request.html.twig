@@ -1,0 +1,20 @@
+<div style="background: #0a0a0f; color: #e8e8f0; font-family: 'Courier New', monospace; padding: 32px; max-width: 560px; margin: 0 auto;">
+    <h1 style="color: #39ff8c; font-size: 20px; letter-spacing: 2px;">LA_CHIENNETÉ</h1>
+    <p style="color: #8a8a9a; font-size: 11px; text-transform: uppercase; letter-spacing: 3px;">Demande d'avis</p>
+
+    <p style="font-size: 14px; line-height: 1.6;">
+        Agent {{ purchase.customer.firstname }},<br>
+        votre commande <strong style="color: #39ff8c;">CMD_{{ '%05d'|format(purchase.id) }}</strong> — <strong>{{ purchase.articleTitle }}</strong> — est enregistrée.
+        Racontez-nous. Tout est noté, autant que ce soit par vous.
+    </p>
+
+    <p style="margin: 28px 0; text-align: center;">
+        <a href="{{ reviewUrl }}" style="display: inline-block; border: 1px solid #39ff8c; color: #39ff8c; padding: 12px 24px; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; text-decoration: none;">Laisser un avis →</a>
+    </p>
+
+    <p style="font-size: 11px; color: #8a8a9a; line-height: 1.6;">
+        Votre avis sera public, définitif et rattaché à votre profil. Un seul avis par article : choisissez vos mots.
+    </p>
+
+    <p style="font-size: 10px; color: #55555f; text-transform: uppercase; letter-spacing: 2px;">Ne répondez pas à cet email. Personne ne lit cette boîte.</p>
+</div>
