@@ -3,7 +3,9 @@
 namespace App\Form;
 
 use App\Entity\User;
+use App\Service\CurrencyConverter;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,6 +27,11 @@ class ProfileFormType extends AbstractType
             ->add('email', EmailType::class, [
                 'label' => 'Email',
                 'attr' => ['autocomplete' => 'email'],
+            ])
+            ->add('currency', ChoiceType::class, [
+                'label' => 'Devise',
+                'choices' => CurrencyConverter::choices(),
+                'help' => 'Les prix du site seront affichés dans cette devise (taux de change en temps réel).',
             ]);
     }
 

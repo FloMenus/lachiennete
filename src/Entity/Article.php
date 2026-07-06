@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -16,39 +17,56 @@ class Article
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['article:list'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'articles')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['article:list'])]
     private ?User $seller = null;
 
     #[ORM\ManyToOne(inversedBy: 'articles')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['article:list'])]
     private ?Category $category = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
+    #[Groups(['article:list'])]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank]
+    #[Groups(['article:list'])]
     private ?string $description = null;
 
     #[ORM\Column(precision: 10, scale: 2, nullable: true)]
     #[Assert\PositiveOrZero]
+    #[Groups(['article:list'])]
     private ?string $price = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['article:list'])]
     private ?string $alternativePayment = null;
 
     #[ORM\Column]
+    #[Groups(['article:list'])]
     private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $soldAt = null;
+
+    #[ORM\Column(options: ['default' => 1])]
+    #[Assert\PositiveOrZero(message: 'La quantité ne peut pas être négative.')]
+    #[Groups(['article:list'])]
+    private int $quantity = 1;
 
     /**
      * @var Collection<int, Tag>
      */
     #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'articles')]
     #[ORM\JoinTable(name: 'article_tag')]
+    #[Groups(['article:list'])]
     private Collection $tags;
 
     /**
@@ -56,6 +74,7 @@ class Article
      */
     #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'article', orphanRemoval: true, cascade: ['persist'])]
     #[ORM\OrderBy(['position' => 'ASC'])]
+    #[Groups(['article:list'])]
     private Collection $images;
 
     /**
@@ -169,6 +188,34 @@ class Article
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+    public function getSoldAt(): ?\DateTimeImmutable
+    {
+        return $this->soldAt;
+    }
+
+    public function isSold(): bool
+    {
+        return $this->quantity <= 0;
+    }
+
+    public function getQuantity(): int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): static
+    {
+        $this->quantity = $quantity;
+        $this->soldAt = $quantity <= 0 ? ($this->soldAt ?? new \DateTimeImmutable()) : null;
+
+        return $this;
+    }
+
+    public function decrementQuantity(): static
+    {
+        return $this->setQuantity($this->quantity - 1);
     }
 
     /**

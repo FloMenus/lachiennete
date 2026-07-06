@@ -15,7 +15,7 @@ use Symfony\UX\Turbo\TurboBundle;
 #[IsGranted('ROLE_CLIENT')]
 final class FavoriteController extends AbstractController
 {
-    #[Route('/favoris', name: 'app_favorites', methods: ['GET'])]
+    #[Route('/favorites', name: 'app_favorites', methods: ['GET'])]
     public function index(): Response
     {
         /** @var User $user */

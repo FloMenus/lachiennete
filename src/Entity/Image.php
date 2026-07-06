@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ImageRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
@@ -13,6 +14,7 @@ class Image
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['article:list'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'images')]
@@ -21,13 +23,16 @@ class Image
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
+    #[Groups(['article:list'])]
     private ?string $filename = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['article:list'])]
     private ?string $alt = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
     #[Assert\PositiveOrZero]
+    #[Groups(['article:list'])]
     private int $position = 0;
 
     public function getId(): ?int

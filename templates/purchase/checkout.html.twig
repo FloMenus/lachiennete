@@ -1,0 +1,132 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LA_CHIENNETÉ — Passage en caisse{% endblock %}
+
+{% block body %}
+    <section class="mx-auto max-w-6xl px-8 pb-24 pt-14">
+        <nav class="mb-10 flex items-center gap-2 text-[11px] uppercase tracking-widest text-ink-faint" aria-label="Fil d'Ariane">
+            <a href="{{ path('app_home') }}" class="text-ink-dim hover:text-acid">// Annonces</a>
+            <span aria-hidden="true">/</span>
+            <a href="{{ path('app_article_show', { id: article.id }) }}" class="text-ink-dim hover:text-acid">REF_{{ '%05d'|format(article.id) }}</a>
+            <span aria-hidden="true">/</span>
+            <span class="text-acid">Caisse</span>
+        </nav>
+
+        <h1 class="glitch-text mb-3 -rotate-1 font-display text-[clamp(1.8rem,4vw,2.6rem)] text-ink" data-text="PASSAGE EN CAISSE" data-terminal-target="glitch">PASSAGE EN CAISSE</h1>
+        <p class="mb-10 w-fit -rotate-1 border border-dashed border-amber px-2 py-1 text-[10px] uppercase tracking-widest text-amber">Mode démonstration — aucun paiement réel ne sera effectué</p>
+
+        {% if errors|length > 0 %}
+            <ul class="mb-8 flex flex-col gap-1 border-l-4 border-blood bg-void-raised px-5 py-3">
+                {% for error in errors %}
+                    <li class="text-[12px] text-blood">{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <div class="grid gap-12 lg:grid-cols-[1.2fr_1fr]">
+            <form method="post" action="{{ path('app_checkout', { id: article.id }) }}" class="flex flex-col gap-10" data-controller="checkout">
+                <input type="hidden" name="_token" value="{{ csrf_token('checkout_' ~ article.id) }}">
+
+                <fieldset class="border border-line bg-void-card p-6">
+                    <legend class="px-2 text-sm tracking-wider text-ink-dim">// 01 — POINT DE LIVRAISON</legend>
+
+                    <div class="flex flex-col gap-3">
+                        {% for address in shippingAddresses %}
+                            <label class="flex cursor-pointer items-start gap-3 border border-line bg-void-raised px-4 py-3 transition has-[:checked]:border-acid">
+                                <input type="radio" name="address_id" value="{{ address.id }}" class="mt-1 accent-[#39ff8c]"
+                                       data-action="change->checkout#toggle"
+                                       {{ previous.address_id|default(loop.first ? address.id) == address.id ? 'checked' }}>
+                                <span class="flex flex-col gap-0.5">
+                                    <span class="text-[10px] uppercase tracking-[0.2em] text-ink-dim">{{ address.label }}{% if address.isDefault %} <span class="text-acid-dim">[défaut]</span>{% endif %}</span>
+                                    <span class="text-sm text-ink">{{ address.street }}, {{ address.postalCode }} {{ address.city }} — {{ address.country }}</span>
+                                </span>
+                            </label>
+                        {% endfor %}
+
+                        <label class="flex cursor-pointer items-center gap-3 border border-dashed border-line bg-void-raised px-4 py-3 transition has-[:checked]:border-acid">
+                            <input type="radio" name="address_id" value="new" class="accent-[#39ff8c]"
+                                   data-action="change->checkout#toggle"
+                                   {{ shippingAddresses|length == 0 or previous.address_id|default('') == 'new' ? 'checked' }}>
+                            <span class="text-[11px] uppercase tracking-widest text-ink-dim">+ Livrer ailleurs (nouvelle planque)</span>
+                        </label>
+                    </div>
+
+                    <div data-checkout-target="newAddress" class="{{ shippingAddresses|length == 0 or previous.address_id|default('') == 'new' ? '' : 'hidden' }} mt-5 grid gap-4 border-t border-line pt-5 sm:grid-cols-2">
+                        <div class="flex flex-col gap-1.5">
+                            <label for="new_label" class="text-[10px] uppercase tracking-[0.2em] text-ink-dim">Nom de la planque</label>
+                            <input type="text" id="new_label" name="new_label" value="{{ previous.new_label|default('Livraison') }}" class="w-full border border-line bg-void-raised px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-faint transition focus:border-acid focus:outline-none">
+                        </div>
+                        <div class="flex flex-col gap-1.5 sm:col-span-2">
+                            <label for="new_street" class="text-[10px] uppercase tracking-[0.2em] text-ink-dim">Rue</label>
+                            <input type="text" id="new_street" name="new_street" value="{{ previous.new_street|default('') }}" placeholder="13 rue des Cyphers" class="w-full border border-line bg-void-raised px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-faint transition focus:border-acid focus:outline-none">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label for="new_postal_code" class="text-[10px] uppercase tracking-[0.2em] text-ink-dim">Code postal</label>
+                            <input type="text" id="new_postal_code" name="new_postal_code" value="{{ previous.new_postal_code|default('') }}" placeholder="75003" class="w-full border border-line bg-void-raised px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-faint transition focus:border-acid focus:outline-none">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label for="new_city" class="text-[10px] uppercase tracking-[0.2em] text-ink-dim">Ville</label>
+                            <input type="text" id="new_city" name="new_city" value="{{ previous.new_city|default('') }}" placeholder="Paris" class="w-full border border-line bg-void-raised px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-faint transition focus:border-acid focus:outline-none">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label for="new_country" class="text-[10px] uppercase tracking-[0.2em] text-ink-dim">Pays</label>
+                            <input type="text" id="new_country" name="new_country" value="{{ previous.new_country|default('France') }}" class="w-full border border-line bg-void-raised px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-faint transition focus:border-acid focus:outline-none">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset class="relative border border-line bg-void-card p-6">
+                    <legend class="px-2 text-sm tracking-wider text-ink-dim">// 02 — RÈGLEMENT (FACTICE)</legend>
+                    <span class="absolute -right-2 -top-4 rotate-3 bg-blood px-2 py-0.5 text-[9px] uppercase tracking-widest text-void">Aucun débit réel</span>
+
+                    <div class="grid gap-4 sm:grid-cols-2">
+                        <div class="flex flex-col gap-1.5 sm:col-span-2">
+                            <label for="card_name" class="text-[10px] uppercase tracking-[0.2em] text-ink-dim">Titulaire</label>
+                            <input type="text" id="card_name" name="card_name" value="{{ previous.card_name|default(app.user.firstname ~ ' ' ~ app.user.lastname) }}" class="w-full border border-line bg-void-raised px-3.5 py-2.5 text-sm text-ink transition focus:border-acid focus:outline-none">
+                        </div>
+                        <div class="flex flex-col gap-1.5 sm:col-span-2">
+                            <label for="card_number" class="text-[10px] uppercase tracking-[0.2em] text-ink-dim">Numéro de carte</label>
+                            <input type="text" id="card_number" name="card_number" inputmode="numeric" value="{{ previous.card_number|default('4242 4242 4242 4242') }}" class="w-full border border-line bg-void-raised px-3.5 py-2.5 font-mono text-sm text-ink transition focus:border-acid focus:outline-none">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label for="card_expiry" class="text-[10px] uppercase tracking-[0.2em] text-ink-dim">Expiration</label>
+                            <input type="text" id="card_expiry" name="card_expiry" value="12/29" class="w-full border border-line bg-void-raised px-3.5 py-2.5 font-mono text-sm text-ink transition focus:border-acid focus:outline-none">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label for="card_cvc" class="text-[10px] uppercase tracking-[0.2em] text-ink-dim">CVC</label>
+                            <input type="text" id="card_cvc" name="card_cvc" value="666" class="w-full border border-line bg-void-raised px-3.5 py-2.5 font-mono text-sm text-ink transition focus:border-acid focus:outline-none">
+                        </div>
+                    </div>
+                    <p class="mt-4 text-[10px] uppercase tracking-widest text-ink-faint">Ces données ne sont ni vérifiées, ni stockées. C'est une démonstration, pas une escroquerie.</p>
+                </fieldset>
+
+                <button type="submit" class="group relative border border-acid bg-acid px-4 py-4 text-[13px] font-bold uppercase tracking-wider text-void transition hover:-translate-y-0.5 hover:shadow-[3px_3px_0_rgba(57,255,140,0.35)]">
+                    CONFIRMER LA COMMANDE — {{ article.price|price }}
+                    <span class="absolute -right-1.5 -top-1.5 rotate-6 bg-blood px-1 py-0.5 text-[8px] tracking-widest text-void">SANS REMBOURSEMENT</span>
+                </button>
+            </form>
+
+            <aside class="h-fit border border-line bg-void-card p-5">
+                <h2 class="mb-4 border-b border-line pb-2 text-sm font-normal tracking-wider text-ink-dim">// VOTRE BUTIN</h2>
+                {% set mainImage = article.images.first %}
+                <div class="mb-4 aspect-[4/3] overflow-hidden border border-line bg-void-raised">
+                    {% if mainImage %}
+                        <img src="{{ asset('uploads/articles/' ~ mainImage.filename) }}" alt="{{ mainImage.alt|default(article.title) }}" class="h-full w-full object-cover grayscale-[40%] contrast-115">
+                    {% else %}
+                        <div class="flex h-full items-center justify-center text-[11px] tracking-widest text-ink-faint">AUCUN VISUEL — VOUS ACHETEZ À L'AVEUGLE</div>
+                    {% endif %}
+                </div>
+                <h3 class="font-display text-lg text-ink">{{ article.title }}</h3>
+                {% if article.seller %}
+                    <p class="mt-1 text-[11px] text-ink-dim">Vendu par Agent_{{ article.seller.id }}{{ article.seller.lastname|slice(0, 1)|upper }}</p>
+                {% endif %}
+                <dl class="mt-5 flex flex-col gap-2 border-t border-line pt-4 text-sm">
+                    <div class="flex justify-between"><dt class="text-ink-dim">Article</dt><dd class="text-ink">{{ article.price|price }}</dd></div>
+                    <div class="flex justify-between"><dt class="text-ink-dim">Livraison discrète</dt><dd class="text-acid">Offerte*</dd></div>
+                    <div class="flex justify-between border-t border-line pt-2"><dt class="uppercase tracking-widest text-ink-dim">Total</dt><dd class="font-display text-2xl text-acid">{{ article.price|price }}</dd></div>
+                </dl>
+                <p class="mt-4 text-[9px] uppercase tracking-widest text-ink-faint">*Rien n'est jamais vraiment offert.</p>
+            </aside>
+        </div>
+    </section>
+{% endblock %}

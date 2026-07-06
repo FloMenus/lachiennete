@@ -1,0 +1,128 @@
+@startuml database
+
+title Base de données — Marketplace (Symfony 8 / Doctrine ORM / PostgreSQL 16)
+
+skinparam linetype ortho
+skinparam classAttributeIconSize 0
+hide circle
+
+' ========== Entités ==========
+
+class User <<app_user>> {
+  +id : int <<PK>>
+  +email : string(180) <<unique>>
+  +roles : json
+  +password : string
+  +firstname : string(100)
+  +lastname : string(100)
+  +currency : string(3) = "EUR"
+  +createdAt : datetime
+}
+
+class Article {
+  +id : int <<PK>>
+  +title : string(255)
+  +description : text
+  +price : decimal(10,2) <<nullable>>
+  +alternativePayment : string(255) <<nullable>>
+  +quantity : int = 1
+  +createdAt : datetime
+  +soldAt : datetime <<nullable>>
+}
+
+class Category {
+  +id : int <<PK>>
+  +name : string(100)
+  +slug : string(100) <<unique>>
+  +description : text <<nullable>>
+}
+
+class Tag {
+  +id : int <<PK>>
+  +name : string(50) <<unique>>
+}
+
+class Image {
+  +id : int <<PK>>
+  +filename : string(255)
+  +alt : string(255) <<nullable>>
+  +position : smallint = 0
+}
+
+class Purchase {
+  +id : int <<PK>>
+  +articleTitle : string(255)
+  +price : decimal(10,2) <<nullable>>
+  +paymentNote : string(255) <<nullable>>
+  +deliveryAddress : string(255) <<nullable>>
+  +purchasedAt : datetime
+}
+
+class Review {
+  +id : int <<PK>>
+  +rating : smallint
+  +comment : text <<nullable>>
+  +createdAt : datetime
+}
+
+class Conversation {
+  +id : int <<PK>>
+  +createdAt : datetime
+}
+
+class Message {
+  +id : int <<PK>>
+  +content : text
+  +sentAt : datetime
+  +isRead : bool = false
+}
+
+' ----- Héritage Single Table (discriminateur "type") -----
+
+abstract class Address <<address, STI>> {
+  +id : int <<PK>>
+  +type : string(20) <<discriminateur>>
+  +label : string(100)
+  +street : string(255)
+  +postalCode : string(10)
+  +city : string(100)
+  +country : string(100) = "France"
+  +isDefault : bool = false
+}
+
+class ShippingAddress {
+  +recipientName : string(200) <<nullable>>
+  +deliveryInstructions : string(500) <<nullable>>
+}
+
+class BillingAddress {
+  +companyName : string(200) <<nullable>>
+  +vatNumber : string(30) <<nullable>>
+}
+
+Address <|-- ShippingAddress
+Address <|-- BillingAddress
+
+' ========== Relations ==========
+
+' --- User ---
+User "1" --> "0..*" Article : vend (seller)
+User "1" --> "0..*" Purchase : achète (customer)
+User "1" --> "0..*" Review : rédige (author)
+User "1" --> "0..*" Address : possède (owner)
+User "1" --> "0..*" Conversation : initie (buyer)
+User "0..*" -- "0..*" Article : favoris\n<<user_favorite>>
+
+' --- Article ---
+Category "1" --> "0..*" Article : classe
+Article "0..*" -- "0..*" Tag : <<article_tag>>
+Article "1" *--> "0..*" Image : illustré par\n(orphanRemoval)
+Article "1" *--> "0..*" Review : noté par\n(orphanRemoval)
+Article "1" *--> "0..*" Conversation : discuté dans\n(orphanRemoval)
+Article "0..1" <-- "0..*" Purchase : concerne\n(ON DELETE SET NULL)
+
+' --- Messagerie ---
+Conversation "1" *--> "0..*" Message : contient\n(orphanRemoval)
+User "1" --> "0..*" Message : écrit (author)
+
+@enduml

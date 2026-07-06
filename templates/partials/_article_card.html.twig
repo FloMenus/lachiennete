@@ -10,6 +10,11 @@
         {% if article.category %}
             <span class="absolute left-[-0.4rem] top-2.5 -rotate-3 bg-violet px-2 py-0.5 text-[10px] uppercase tracking-wide text-void">{{ article.category.name }}</span>
         {% endif %}
+        {% if article.sold %}
+            <div class="absolute inset-0 z-10 flex items-center justify-center bg-void/60">
+                <span class="-rotate-12 border-2 border-blood bg-void/85 px-5 py-1.5 font-display text-xl font-bold uppercase tracking-[0.3em] text-blood shadow-[0_0_12px_rgba(255,31,75,0.4)]">SOLD OUT</span>
+            </div>
+        {% endif %}
     </div>
 
     <div class="flex-1 px-4 pb-2 pt-4">
@@ -28,7 +33,7 @@
     <div class="flex items-end justify-between gap-2 px-4 pb-4 pt-3">
         <div class="flex flex-col gap-1">
             {% if article.price %}
-                <span class="font-display text-lg text-acid">{{ article.price|number_format(2, ',', ' ') }} €</span>
+                <span class="font-display text-lg text-acid">{{ article.price|price }}</span>
             {% else %}
                 <span class="w-fit bg-[repeating-linear-gradient(45deg,rgba(255,31,75,0.08)_0,rgba(255,31,75,0.08)_4px,transparent_4px,transparent_8px)] px-1 py-0.5 font-mono text-[11px] tracking-wide text-blood">PRIX SUR DEVIS</span>
             {% endif %}

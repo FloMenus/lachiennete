@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LA_CHIENNETÉ — Canal {{ '%05d'|format(conversation.id) }}{% endblock %}
+
+{% block body %}
+    {% set article = conversation.article %}
+    {% set other = conversation.buyer.id == app.user.id ? article.seller : conversation.buyer %}
+
+    <section class="mx-auto max-w-3xl px-8 pb-24 pt-14">
+        <nav class="mb-8 flex items-center gap-2 text-[11px] uppercase tracking-widest text-ink-faint" aria-label="Fil d'Ariane">
+            <a href="{{ path('app_conversations') }}" class="text-ink-dim hover:text-acid">// Mes conversations</a>
+            <span aria-hidden="true">/</span>
+            <span class="text-ink-dim">CANAL_{{ '%05d'|format(conversation.id) }}</span>
+        </nav>
+
+        <header class="mb-6 flex flex-wrap items-center justify-between gap-4 border border-line bg-void-card p-4">
+            <div class="flex items-center gap-4">
+                {% set mainImage = article.images.first %}
+                <div class="h-14 w-14 shrink-0 overflow-hidden border border-line bg-void-raised">
+                    {% if mainImage %}
+                        <img src="{{ asset('uploads/articles/' ~ mainImage.filename) }}" alt="{{ mainImage.alt|default(article.title) }}" class="h-full w-full object-cover grayscale-[40%]">
+                    {% else %}
+                        <div class="flex h-full items-center justify-center text-[9px] text-ink-faint">N/A</div>
+                    {% endif %}
+                </div>
+                <div class="flex flex-col gap-0.5">
+                    <a href="{{ path('app_article_show', { id: article.id }) }}" class="text-sm text-ink hover:text-acid">{{ article.title }}</a>
+                    <span class="text-[10px] uppercase tracking-widest text-ink-faint">
+                        Avec <span class="text-violet">Agent_{{ other.id }}{{ other.lastname|slice(0, 1)|upper }}</span>
+                        {{ other.id == article.seller.id ? '(vendeur)' : '(acheteur)' }}
+                    </span>
+                </div>
+            </div>
+            <span class="-rotate-2 border border-dashed border-acid-dim px-2 py-0.5 text-[9px] uppercase tracking-widest text-acid-dim">⦿ TEMPS RÉEL — MERCURE</span>
+        </header>
+
+        <div {{ turbo_stream_listen('/conversations/' ~ conversation.id, null, { withCredentials: true }) }}></div>
+
+        <style>
+            #messages > [data-author] { align-self: flex-start; border-left: 2px solid var(--color-violet); }
+            #messages > [data-author="{{ app.user.id }}"] { align-self: flex-end; border-left-color: var(--color-line); border-right: 2px solid var(--color-acid); }
+            #messages #empty-state:not(:only-child) { display: none; }
+        </style>
+
+        <div id="messages" data-controller="chat" class="flex h-[55vh] flex-col gap-3 overflow-y-auto border border-line bg-void-raised p-5" aria-live="polite">
+            {% for message in conversation.messages %}
+                {{ include('conversation/_message.html.twig', { message }) }}
+            {% endfor %}
+            {% if conversation.messages is empty %}
+                <p id="empty-state" class="m-auto text-center text-[11px] uppercase tracking-widest text-ink-faint">Canal ouvert. Personne n'a encore parlé.<br>Ça vous regarde.</p>
+            {% endif %}
+        </div>
+
+        {{ include('conversation/_form.html.twig', { form, conversation }) }}
+    </section>
+{% endblock %}
