@@ -38,9 +38,10 @@ RUN mkdir -p var/cache var/log public/uploads/articles public/uploads/misc
 
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-scripts --ignore-platform-req=ext-amqp --ignore-platform-req=ext-redis
 
-RUN echo "APP_ENV=prod" > .env
-RUN php bin/console importmap:install
-RUN php bin/console tailwind:build --minify
+RUN echo "APP_ENV=prod" > .env \
+    && php bin/console importmap:install \
+    && php bin/console tailwind:build --minify \
+    && rm .env
 
 RUN chown -R www-data:www-data var public/uploads
 
