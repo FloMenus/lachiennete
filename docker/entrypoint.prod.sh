@@ -5,12 +5,6 @@ export APP_ENV=prod
 
 printf "APP_ENV=prod\nAPP_SECRET=%s\n" "${APP_SECRET:-changeme}" > .env
 
-echo "==> Installation des assets importmap..."
-php bin/console importmap:install
-
-echo "==> Compilation de Tailwind CSS..."
-php bin/console tailwind:build --minify
-
 echo "==> Warm-up du cache..."
 php bin/console cache:warmup
 
