@@ -21,17 +21,11 @@ composer dump-autoload --no-interaction
 echo "==> Installation des assets importmap (Stimulus, Turbo...)..."
 php bin/console importmap:install
 
-echo "==> Compilation de Tailwind CSS..."
-php bin/console tailwind:build
-
 echo "==> Warm-up du cache Symfony..."
 php bin/console cache:warmup
 
 echo "==> Exécution des migrations..."
 php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
-
-echo "==> Démarrage du watcher Tailwind CSS en arrière-plan..."
-php bin/console tailwind:build --watch &
 
 echo "==> Démarrage du serveur PHP sur le port 8000..."
 exec php -S 0.0.0.0:8000 -t public

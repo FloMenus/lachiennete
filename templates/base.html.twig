@@ -8,7 +8,26 @@
         <title>{% block title %}LA_CHIENNETÉ — tout s'achète{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🕳️</text></svg>">
         {% block stylesheets %}
-            <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
+            <link rel="stylesheet" href="{{ asset('styles/custom.css') }}">
+            <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+            <style type="text/tailwindcss">
+                @theme {
+                    --color-void: #060608;
+                    --color-void-raised: #0d0d11;
+                    --color-void-card: #101014;
+                    --color-line: #232329;
+                    --color-acid: #39ff8c;
+                    --color-acid-dim: #1f8f52;
+                    --color-blood: #ff1f4b;
+                    --color-violet: #9b5cff;
+                    --color-amber: #ffb020;
+                    --color-ink: #d8d8dd;
+                    --color-ink-dim: #726f7d;
+                    --color-ink-faint: #45424e;
+                    --font-mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'Courier New', monospace;
+                    --font-display: Georgia, 'Times New Roman', serif;
+                }
+            </style>
         {% endblock %}
 
         {% block javascripts %}

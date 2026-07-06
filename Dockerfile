@@ -40,7 +40,6 @@ RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-s
 
 RUN echo "APP_ENV=prod" > .env \
     && php bin/console importmap:install \
-    && php bin/console tailwind:build --minify \
     && rm .env
 
 RUN chown -R www-data:www-data var public/uploads
