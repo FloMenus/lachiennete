@@ -33,7 +33,7 @@ services:
       - vendor:/var/www/html/vendor
       - var:/var/www/html/var
     environment:
-      DATABASE_URL: postgresql://app:my-super-secret-password@database:5432/app?serverVersion=16&charset=utf8
+      DATABASE_URL: postgresql://neondb_owner:npg_ErUkd0VD6mnz@ep-red-waterfall-asrh7fbb.c-4.eu-central-1.aws.neon.tech/neondb?sslmode=require&serverVersion=16
       MESSENGER_TRANSPORT_DSN: doctrine://default
       MAILER_DSN: smtp://mailer:1025
     depends_on:
