@@ -32,6 +32,7 @@ COPY . .
 
 ENV APP_ENV=prod
 ENV APP_SECRET=buildsecret
+ENV DATABASE_URL="postgresql://app:!ChangeMe!@127.0.0.1:5432/app?serverVersion=16&charset=utf8"
 
 RUN mkdir -p var/cache var/log public/uploads/articles public/uploads/misc
 
