@@ -1,9 +1,9 @@
 #!/bin/sh
 set -e
 
-if [ ! -f .env ]; then
-    printf "APP_ENV=prod\nAPP_SECRET=%s\n" "${APP_SECRET:-changeme}" > .env
-fi
+export APP_ENV=prod
+
+printf "APP_ENV=prod\nAPP_SECRET=%s\n" "${APP_SECRET:-changeme}" > .env
 
 echo "==> Installation des assets importmap..."
 php bin/console importmap:install
