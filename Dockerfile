@@ -35,7 +35,7 @@ ENV APP_SECRET=buildsecret
 
 RUN mkdir -p var/cache var/log public/uploads/articles public/uploads/misc
 
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev --no-scripts --ignore-platform-req=ext-amqp
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-scripts
 
 RUN chown -R www-data:www-data var public/uploads
 
