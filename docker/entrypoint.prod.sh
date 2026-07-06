@@ -2,7 +2,7 @@
 set -e
 
 if [ ! -f .env ]; then
-    cp .env.example .env
+    printf "APP_ENV=prod\nAPP_SECRET=%s\n" "${APP_SECRET:-changeme}" > .env
 fi
 
 echo "==> Installation des assets importmap..."
