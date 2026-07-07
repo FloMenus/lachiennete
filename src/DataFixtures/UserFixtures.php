@@ -35,19 +35,19 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $users = [
-            self::ADMIN => ['admin@snapdeals.fr', 'Sophie', 'Lambert', ['ROLE_ADMIN']],
-            self::CLIENT => ['julien.moreau@gmail.com', 'Julien', 'Moreau', ['ROLE_CLIENT']],
-            'user-client-2' => ['emma.petit@gmail.com', 'Emma', 'Petit', ['ROLE_CLIENT']],
-            'user-client-3' => ['lucas.bernard@outlook.fr', 'Lucas', 'Bernard', ['ROLE_CLIENT']],
-            'user-client-4' => ['chloe.durand@gmail.com', 'Chloé', 'Durand', ['ROLE_CLIENT']],
-            'user-client-5' => ['hugo.fontaine@yahoo.fr', 'Hugo', 'Fontaine', ['ROLE_CLIENT']],
-            'user-client-6' => ['lea.marchand@gmail.com', 'Léa', 'Marchand', ['ROLE_CLIENT']],
-            'user-client-7' => ['antoine.girard@hotmail.fr', 'Antoine', 'Girard', ['ROLE_CLIENT']],
-            'user-client-8' => ['manon.chevalier@gmail.com', 'Manon', 'Chevalier', ['ROLE_CLIENT']],
-            'user-client-9' => ['maxime.dupont@orange.fr', 'Maxime', 'Dupont', ['ROLE_CLIENT']],
-            self::SELLER_1 => ['thomas.lefevre@gmail.com', 'Thomas', 'Lefèvre', ['ROLE_PRESTATAIRE']],
-            self::SELLER_2 => ['camille.roussel@outlook.fr', 'Camille', 'Roussel', ['ROLE_PRESTATAIRE']],
-            self::SELLER_3 => ['nicolas.garnier@hotmail.fr', 'Nicolas', 'Garnier', ['ROLE_PRESTATAIRE']],
+            self::ADMIN => ['admin@example.com', 'Sophie', 'Lambert', ['ROLE_ADMIN']],
+            self::CLIENT => ['julien.moreau@example.com', 'Julien', 'Moreau', ['ROLE_CLIENT']],
+            'user-client-2' => ['emma.petit@example.com', 'Emma', 'Petit', ['ROLE_CLIENT']],
+            'user-client-3' => ['lucas.bernard@example.com', 'Lucas', 'Bernard', ['ROLE_CLIENT']],
+            'user-client-4' => ['chloe.durand@example.com', 'Chloé', 'Durand', ['ROLE_CLIENT']],
+            'user-client-5' => ['hugo.fontaine@example.com', 'Hugo', 'Fontaine', ['ROLE_CLIENT']],
+            'user-client-6' => ['lea.marchand@example.com', 'Léa', 'Marchand', ['ROLE_CLIENT']],
+            'user-client-7' => ['antoine.girard@example.com', 'Antoine', 'Girard', ['ROLE_CLIENT']],
+            'user-client-8' => ['manon.chevalier@example.com', 'Manon', 'Chevalier', ['ROLE_CLIENT']],
+            'user-client-9' => ['maxime.dupont@example.com', 'Maxime', 'Dupont', ['ROLE_CLIENT']],
+            self::SELLER_1 => ['thomas.lefevre@example.com', 'Thomas', 'Lefèvre', ['ROLE_PRESTATAIRE']],
+            self::SELLER_2 => ['camille.roussel@example.com', 'Camille', 'Roussel', ['ROLE_PRESTATAIRE']],
+            self::SELLER_3 => ['nicolas.garnier@example.com', 'Nicolas', 'Garnier', ['ROLE_PRESTATAIRE']],
         ];
 
         foreach ($users as $reference => [$email, $firstname, $lastname, $roles]) {

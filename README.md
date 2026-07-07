@@ -103,31 +103,31 @@ Tous les comptes ont le mot de passe : **`password`**
 ### ROLE_ADMIN
 | Email | Prénom | Nom |
 |---|---|---|
-| admin@snapdeals.fr | Sophie | Lambert |
+| admin@example.com | Sophie | Lambert |
 
 ### ROLE_PRESTATAIRE (vendeur)
 | Email | Prénom | Nom |
 |---|---|---|
-| thomas.lefevre@gmail.com | Thomas | Lefèvre |
-| camille.roussel@outlook.fr | Camille | Roussel |
-| nicolas.garnier@hotmail.fr | Nicolas | Garnier |
+| thomas.lefevre@example.com | Thomas | Lefèvre |
+| camille.roussel@example.com | Camille | Roussel |
+| nicolas.garnier@example.com | Nicolas | Garnier |
 
 ### ROLE_CLIENT (acheteur)
 | Email | Prénom | Nom |
 |---|---|---|
-| julien.moreau@gmail.com | Julien | Moreau |
-| emma.petit@gmail.com | Emma | Petit |
-| lucas.bernard@outlook.fr | Lucas | Bernard |
-| chloe.durand@gmail.com | Chloé | Durand |
-| hugo.fontaine@yahoo.fr | Hugo | Fontaine |
-| lea.marchand@gmail.com | Léa | Marchand |
-| antoine.girard@hotmail.fr | Antoine | Girard |
-| manon.chevalier@gmail.com | Manon | Chevalier |
-| maxime.dupont@orange.fr | Maxime | Dupont |
+| julien.moreau@example.com | Julien | Moreau |
+| emma.petit@example.com | Emma | Petit |
+| lucas.bernard@example.com | Lucas | Bernard |
+| chloe.durand@example.com | Chloé | Durand |
+| hugo.fontaine@example.com | Hugo | Fontaine |
+| lea.marchand@example.com | Léa | Marchand |
+| antoine.girard@example.com | Antoine | Girard |
+| manon.chevalier@example.com | Manon | Chevalier |
+| maxime.dupont@example.com | Maxime | Dupont |
 
 ### ROLE_BANNI
 Aucun compte banni n'est créé par les fixtures. Pour tester ce rôle :
-1. Se connecter en tant qu'**admin** (`admin@snapdeals.fr` / `password`)
+1. Se connecter en tant qu'**admin** (`admin@example.com` / `password`)
 2. Aller sur `/admin/utilisateurs`
 3. Cliquer sur **"Bannir"** sur le compte souhaité
 4. Se connecter avec ce compte — la page de bannissement s'affiche
