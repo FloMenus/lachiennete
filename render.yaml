@@ -13,7 +13,7 @@ services:
       - key: MESSENGER_TRANSPORT_DSN
         value: sync://
       - key: MAILER_DSN
-        value: null://null
+        sync: false
       - key: CORS_ALLOW_ORIGIN
         value: '^https://.*\.onrender\.com$'
       - key: DEFAULT_URI

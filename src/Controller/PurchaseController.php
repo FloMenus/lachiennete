@@ -75,7 +75,7 @@ final class PurchaseController extends AbstractController
 
                 $mailer->send(
                     (new TemplatedEmail())
-                        ->from(new Address('no-reply@la-chiennete.onion', 'LA_CHIENNETÉ'))
+                        ->from(new Address('b1241d001@smtp-brevo.com', 'LA_CHIENNETÉ'))
                         ->to(new Address($user->getEmail(), $user->getFirstname().' '.$user->getLastname()))
                         ->subject(sprintf('Commande #%05d confirmée — %s', $purchase->getId(), $purchase->getArticleTitle()))
                         ->htmlTemplate('emails/purchase_confirmation.html.twig')
@@ -84,7 +84,7 @@ final class PurchaseController extends AbstractController
 
                 $mailer->send(
                     (new TemplatedEmail())
-                        ->from(new Address('no-reply@la-chiennete.onion', 'LA_CHIENNETÉ'))
+                        ->from(new Address('b1241d001@smtp-brevo.com', 'LA_CHIENNETÉ'))
                         ->to(new Address($user->getEmail(), $user->getFirstname().' '.$user->getLastname()))
                         ->subject(sprintf('Votre avis sur « %s »', $purchase->getArticleTitle()))
                         ->htmlTemplate('emails/review_request.html.twig')
