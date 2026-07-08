@@ -1,5 +1,12 @@
 # LA_CHIENNETÉ — Guide d'installation
 
+## Auteurs du projet
+
+- [**Florent MENUS**](https://github.com/FloMenus)
+- [**Tom DEPUSSAY**](https://github.com/tomdepussay)
+
+---
+
 ## Prérequis
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) ≥ 24
